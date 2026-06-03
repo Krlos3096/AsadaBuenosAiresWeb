@@ -411,7 +411,7 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
             onClick={handleSave}
             variant="contained"
             disabled={isSaving}
-            sx={{ backgroundColor: '#04A6DB', '&:hover': { backgroundColor: '#0385b0' } }}
+            sx={{ backgroundColor: '#1f7a1f', '&:hover': { backgroundColor: '#0385b0' } }}
           >
             {isSaving ? t.common.loading : mode === 'add' ? t.common.add : t.common.save}
           </Button>

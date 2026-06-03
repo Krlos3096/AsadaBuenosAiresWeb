@@ -4,7 +4,7 @@ import { typographyClasses } from '@mui/material/Typography';
 import { buttonBaseClasses } from '@mui/material/ButtonBase';
 import { chipClasses } from '@mui/material/Chip';
 import { iconButtonClasses } from '@mui/material/IconButton';
-import { gray, red, green } from '../themePrimitives';
+import { gray, red, blue, brand } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
 export const dataDisplayCustomizations: Components<Theme> = {
@@ -128,22 +128,22 @@ export const dataDisplayCustomizations: Components<Theme> = {
               color: 'success',
             },
             style: {
-              borderColor: green[200],
-              backgroundColor: green[50],
+              borderColor: brand[200],
+              backgroundColor: brand[50],
               [`& .${chipClasses.label}`]: {
-                color: green[500],
+                color: brand[500],
               },
               [`& .${chipClasses.icon}`]: {
-                color: green[500],
+                color: brand[500],
               },
               ...theme.applyStyles('dark', {
-                borderColor: green[800],
-                backgroundColor: green[900],
+                borderColor: blue[800],
+                backgroundColor: blue[900],
                 [`& .${chipClasses.label}`]: {
-                  color: green[300],
+                  color: blue[300],
                 },
                 [`& .${chipClasses.icon}`]: {
-                  color: green[300],
+                  color: blue[300],
                 },
               }),
             },

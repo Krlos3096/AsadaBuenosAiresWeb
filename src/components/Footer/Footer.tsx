@@ -19,7 +19,7 @@ export default function Footer() {
           height: { xs: "25%", md: "15%" },
         }}
       >
-        <Wave mask="url(#mask)" fill="#04A6DB">
+        <Wave mask="url(#mask)" fill="#1f7a1f">
           <defs>
             <linearGradient id="gradient" gradientTransform="rotate(90)">
               <stop offset="0" stopColor="white" />
@@ -76,7 +76,7 @@ export default function Footer() {
             }}
           >
             Esta página fue creada con amor por el agua potable y la comunidad
-            de suerre
+            de buenosaires
           </Typography>
         </Box>
       </Container>

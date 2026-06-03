@@ -57,7 +57,7 @@ export default function Loading({ message = 'Cargando...' }: LoadingProps) {
           sx={{
             width: 40,
             height: 40,
-            background: 'linear-gradient(135deg, #04A6DB 0%, #0077B6 100%)',
+            background: 'linear-gradient(135deg, #1f7a1f 0%, #0077B6 100%)',
             borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
             animation: `${bounce} 1s ease-in-out infinite`,
             position: 'relative',
@@ -72,7 +72,7 @@ export default function Loading({ message = 'Cargando...' }: LoadingProps) {
             width: 40,
             height: 40,
             borderRadius: '50%',
-            border: '2px solid #04A6DB',
+            border: '2px solid #1f7a1f',
             animation: `${ripple} 1.5s ease-out infinite`,
           }}
         />
@@ -82,7 +82,7 @@ export default function Loading({ message = 'Cargando...' }: LoadingProps) {
             width: 40,
             height: 40,
             borderRadius: '50%',
-            border: '2px solid #04A6DB',
+            border: '2px solid #1f7a1f',
             animation: `${ripple} 1.5s ease-out infinite 0.5s`,
           }}
         />

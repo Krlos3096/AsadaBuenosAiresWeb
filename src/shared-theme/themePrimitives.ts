@@ -31,6 +31,19 @@ const defaultTheme = createTheme();
 const customShadows: Shadows = [...defaultTheme.shadows];
 
 export const brand = {
+  50: 'hsl(120, 80%, 98%)',
+  100: 'hsl(120, 75%, 94%)',
+  200: 'hsl(120, 75%, 87%)',
+  300: 'hsl(120, 61%, 77%)',
+  400: 'hsl(120, 44%, 53%)',
+  500: 'hsl(120, 59%, 30%)',
+  600: 'hsl(120, 70%, 25%)',
+  700: 'hsl(120, 75%, 16%)',
+  800: 'hsl(120, 84%, 10%)',
+  900: 'hsl(120, 87%, 6%)',
+};
+
+export const blue = {
   50:  'hsl(195, 100%, 95%)',
   100: 'hsl(195, 100%, 92%)',
   200: 'hsl(195, 100%, 80%)',
@@ -54,19 +67,6 @@ export const gray = {
   700: 'hsl(220, 20%, 25%)',
   800: 'hsl(220, 30%, 6%)',
   900: 'hsl(220, 35%, 3%)',
-};
-
-export const green = {
-  50: 'hsl(120, 80%, 98%)',
-  100: 'hsl(120, 75%, 94%)',
-  200: 'hsl(120, 75%, 87%)',
-  300: 'hsl(120, 61%, 77%)',
-  400: 'hsl(120, 44%, 53%)',
-  500: 'hsl(120, 59%, 30%)',
-  600: 'hsl(120, 70%, 25%)',
-  700: 'hsl(120, 75%, 16%)',
-  800: 'hsl(120, 84%, 10%)',
-  900: 'hsl(120, 87%, 6%)',
 };
 
 export const orange = {
@@ -149,13 +149,13 @@ export const getDesignTokens = (mode: PaletteMode) => {
         }),
       },
       success: {
-        light: green[300],
-        main: green[400],
-        dark: green[800],
+        light: brand[300],
+        main: brand[400],
+        dark: brand[800],
         ...(mode === 'dark' && {
-          light: green[400],
-          main: green[500],
-          dark: green[700],
+          light: brand[400],
+          main: brand[500],
+          dark: blue[700],
         }),
       },
       grey: {
@@ -264,9 +264,9 @@ export const colorSchemes = {
         dark: red[800],
       },
       success: {
-        light: green[300],
-        main: green[400],
-        dark: green[800],
+        light: brand[300],
+        main: brand[400],
+        dark: brand[800],
       },
       grey: {
         ...gray,
@@ -314,9 +314,9 @@ export const colorSchemes = {
         dark: red[700],
       },
       success: {
-        light: green[400],
-        main: green[500],
-        dark: green[700],
+        light: brand[400],
+        main: brand[500],
+        dark: brand[700],
       },
       grey: {
         ...gray,

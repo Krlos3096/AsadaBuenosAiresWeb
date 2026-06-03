@@ -1,6 +1,6 @@
 # Components Structure
 
-This directory contains all the React components for the Asada Suerre Web application, organized in a modular structure.
+This directory contains all the React components for the Asada Buenos Aires Web application, organized in a modular structure.
 
 ## Structure
 

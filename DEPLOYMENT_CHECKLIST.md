@@ -29,8 +29,8 @@ Use this checklist to ensure a safe and complete production deployment.
 - [ ] No secrets committed to git
 
 ### Database Setup
-- [ ] Created production D1 database: `wrangler d1 create asada-suerre-db-prod`
-- [ ] Created staging D1 database: `wrangler d1 create asada-suerre-db-staging`
+- [ ] Created production D1 database: `wrangler d1 create asada-buenosaires-db-prod`
+- [ ] Created staging D1 database: `wrangler d1 create asada-buenosaires-db-staging`
 - [ ] Updated `wrangler.toml` with database IDs
 - [ ] Applied schema to production: `wrangler d1 execute DB_ID --remote --file=schema.sql --env production`
 - [ ] Applied schema to staging: `wrangler d1 execute DB_ID --remote --file=schema.sql --env staging`
@@ -39,11 +39,11 @@ Use this checklist to ensure a safe and complete production deployment.
 - [ ] Verified database connections
 
 ### R2 Setup
-- [ ] Created production R2 bucket: `wrangler r2 bucket create asada-suerre-images-prod`
-- [ ] Created staging R2 bucket: `wrangler r2 bucket create asada-suerre-images-staging`
+- [ ] Created production R2 bucket: `wrangler r2 bucket create asada-buenosaires-images-prod`
+- [ ] Created staging R2 bucket: `wrangler r2 bucket create asada-buenosaires-images-staging`
 - [ ] Enabled public access on production bucket
 - [ ] Enabled public access on staging bucket
-- [ ] Configured custom domain for CDN (cdn.acueductosuerre.com)
+- [ ] Configured custom domain for CDN (cdn.asadabuenosaires.com)
 - [ ] Uploaded initial images to production bucket
 - [ ] Uploaded initial images to staging bucket
 - [ ] Verified image URLs work correctly
@@ -103,9 +103,9 @@ Use this checklist to ensure a safe and complete production deployment.
 ## Post-Deployment Verification
 
 ### Health Checks
-- [ ] Frontend loads at https://www.acueductosuerre.com
-- [ ] API responds at https://api.acueductosuerre.com
-- [ ] CDN serves images at https://cdn.acueductosuerre.com
+- [ ] Frontend loads at https://www.asadabuenosaires.com
+- [ ] API responds at https://api.asadabuenosaires.com
+- [ ] CDN serves images at https://cdn.asadabuenosaires.com
 - [ ] Health check endpoint responds
 - [ ] Authentication login works
 - [ ] File upload works
@@ -141,7 +141,7 @@ Use this checklist to ensure a safe and complete production deployment.
 ## Domain Configuration
 
 ### DNS Records
-- [ ] CNAME www → asada-suerre-web.pages.dev (Proxied)
+- [ ] CNAME www → asada-buenosaires-web.pages.dev (Proxied)
 - [ ] CNAME api → worker URL (Proxied)
 - [ ] CNAME cdn → R2 domain (Proxied)
 - [ ] CNAME staging → staging Pages domain (Proxied)

@@ -51,12 +51,12 @@ node generate-hash.js
 Replace `YOUR_HASH_HERE` with the generated hash:
 
 ```bash
-npx wrangler d1 execute asada-suerre-db --local --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
+npx wrangler d1 execute asada-buenosaires-db --local --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
 ```
 
 For production (without --local):
 ```bash
-npx wrangler d1 execute asada-suerre-db --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
+npx wrangler d1 execute asada-buenosaires-db --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
 ```
 
 ## Default Credentials (After Setup)
@@ -71,7 +71,7 @@ npx wrangler d1 execute asada-suerre-db --command="INSERT INTO admins (username,
 Check if the admin was created:
 
 ```bash
-npx wrangler d1 execute asada-suerre-db --local --command="SELECT * FROM admins"
+npx wrangler d1 execute asada-buenosaires-db --local --command="SELECT * FROM admins"
 ```
 
 ## Security Notes

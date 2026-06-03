@@ -1,7 +1,7 @@
 {
-  "name": "asada-suerre-worker",
+  "name": "asada-buenosaires-worker",
   "version": "1.0.0",
-  "description": "Cloudflare Worker API for ASADA Suerre",
+  "description": "Cloudflare Worker API for ASADA Buenos Aires",
   "main": "index.ts",
   "type": "module",
   "scripts": {

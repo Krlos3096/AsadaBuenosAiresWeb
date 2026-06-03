@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
-import { ReactComponent as LogoAsada } from '../../assets/asada-suerre-logo.svg';
+import { ReactComponent as LogoAsada } from '../../assets/asada-buenosaires-logo.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
 import { DataService } from '../../services/dataService';
@@ -266,7 +266,7 @@ export default function AppBarComponent() {
         <StyledToolbar
           variant="dense"
           disableGutters
-          sx={{ bgcolor: "#04A6DB", border: "1px solid black", top: "-50px" }}
+          sx={{ bgcolor: "#1f7a1f", border: "1px solid black", top: "-50px" }}
         >
           <Box
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}

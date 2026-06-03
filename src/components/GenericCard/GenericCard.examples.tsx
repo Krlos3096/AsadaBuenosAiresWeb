@@ -7,7 +7,7 @@ import GenericCard, { GenericCardData } from './GenericCard';
 export const newsCardExample: GenericCardData = {
   id: '1',
   title: 'Nueva planta de tratamiento inaugurada',
-  description: 'La ASADA Suerre ha inaugurado una moderna planta de tratamiento que beneficiará a más de 500 familias en la comunidad.',
+  description: 'La ASADA Buenos Aires ha inaugurado una moderna planta de tratamiento que beneficiará a más de 500 familias en la comunidad.',
   image: '/path/to/news-image.jpg',
   tag: 'Infraestructura',
   authors: [

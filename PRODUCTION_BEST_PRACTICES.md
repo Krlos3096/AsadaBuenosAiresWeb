@@ -1,6 +1,6 @@
 # Production Best Practices
 
-This guide covers production best practices for the ASADA Suerre Web application deployed on Cloudflare.
+This guide covers production best practices for the ASADA Buenos Aires Web application deployed on Cloudflare.
 
 ## Table of Contents
 
@@ -121,7 +121,7 @@ Configure in `_headers` file:
 Consider implementing a service worker for offline capability:
 ```javascript
 // service-worker.js
-const CACHE_NAME = 'asada-suerre-v1';
+const CACHE_NAME = 'asada-buenosaires-v1';
 const urlsToCache = [
   '/',
   '/static/css/main.css',
@@ -190,7 +190,7 @@ async function getCachedData(key: string, fetcher: () => Promise<any>, ttl: numb
 
 Configure R2 with Cloudflare CDN:
 1. Enable public access on R2 bucket
-2. Add custom domain (cdn.acueductosuerre.com)
+2. Add custom domain (cdn.asadabuenosaires.com)
 3. Enable Cloudflare caching rules
 
 ## Security Headers
@@ -217,7 +217,7 @@ Implement CSP for additional security:
 ```
 # CSP header
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.acueductosuerre.com
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.asadabuenosaires.com
 ```
 
 ## Logging Strategy
@@ -512,11 +512,11 @@ async function backupDatabase(env: Env): Promise<void> {
   const tables = ['cards', 'card_authors', 'card_items', 'contacts', 'home_slides', 'timeline_items', 'stats', 'about_content', 'admins'];
   
   for (const table of tables) {
-    const result = await env.asada_suerre_db.prepare(`SELECT * FROM ${table}`).all();
+    const result = await env.asada_buenosaires_db.prepare(`SELECT * FROM ${table}`).all();
     
     // Store in R2
     const backupKey = `backups/${table}-${Date.now()}.json`;
-    await env.asada_suerre_images.put(backupKey, JSON.stringify(result.results));
+    await env.asada_buenosaires_images.put(backupKey, JSON.stringify(result.results));
   }
 }
 
@@ -549,7 +549,7 @@ Configure R2 replication to another region:
 
 Enable R2 versioning:
 ```bash
-wrangler r2 bucket configure asada-suerre-images-prod --versioning
+wrangler r2 bucket configure asada-buenosaires-images-prod --versioning
 ```
 
 #### Lifecycle Rules
@@ -559,7 +559,7 @@ Implement lifecycle rules:
 - Delete old backups after 90 days
 
 ```bash
-wrangler r2 bucket configure asada-suerre-images-prod --lifecycle
+wrangler r2 bucket configure asada-buenosaires-images-prod --lifecycle
 ```
 
 ## Disaster Recovery
