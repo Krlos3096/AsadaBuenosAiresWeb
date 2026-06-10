@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../context/TranslationContext';
+import { brand } from '../../shared-theme/themePrimitives';
 
 export interface FileUploadProps {
   value?: string;
@@ -92,7 +93,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           <Button
             startIcon={<DownloadIcon />}
             onClick={handleDownload}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, color: brand[700], borderColor: brand[500], '&:hover': { borderColor: brand[700], backgroundColor: brand[50] } }}
             variant="outlined"
             size="small"
           >
@@ -115,11 +116,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
             {localFile ? localFile.name : t.upload.fileUploaded}
           </Typography>
           {showDownload && value && (
-            <IconButton onClick={handleDownload} color="primary" size="small" aria-label={t.upload.downloadFile}>
+            <IconButton onClick={handleDownload} size="small" aria-label={t.upload.downloadFile} sx={{ color: brand[700], '&:hover': { color: brand[900] } }}>
               <DownloadIcon fontSize="small" />
             </IconButton>
           )}
-          <IconButton onClick={handleDelete} color="error" size="small" aria-label={t.common.delete}>
+          <IconButton onClick={handleDelete} size="small" aria-label={t.common.delete} sx={{ color: brand[700], '&:hover': { color: brand[900] } }}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -128,6 +129,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           variant="outlined"
           component="label"
           startIcon={<CloudUploadIcon />}
+          sx={{ color: brand[700], borderColor: brand[500], '&:hover': { borderColor: brand[700], backgroundColor: brand[50] } }}
           fullWidth
         >
           {t.upload.uploadFile}

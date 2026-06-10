@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FileUpload from '../FileUpload/FileUpload';
 import LinkIcon from '@mui/icons-material/Link';
 import { useTranslation } from '../../context/TranslationContext';
+import { brand } from '../../shared-theme/themePrimitives';
 
 export interface DynamicItemsInputProps {
   label?: string;
@@ -203,13 +204,31 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
                   value={parseText(item)}
                   onChange={(e) => handleChange(index, e.target.value)}
                   placeholder={placeholder}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: brand[300],
+                      },
+                      '&:hover fieldset': {
+                        borderColor: brand[500],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: brand[700],
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: brand[700],
+                      '&.Mui-focused': {
+                        color: brand[700],
+                      },
+                    },
+                  }}
                   size="small"
                 />
                 <IconButton
                   onClick={() => handleRemove(index)}
                   size="small"
-                  color="error"
-                  sx={{ mt: 0.5 }}
+                  sx={{ mt: 0.5, color: brand[700], '&:hover': { color: brand[900] } }}
                   aria-label={t.common.delete}
                 >
                   <DeleteIcon fontSize="small" />
@@ -222,18 +241,40 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
                 onChange={(e) => handleInputTypeChange(index, e.target.value as 'file' | 'url')}
                 sx={{ alignItems: 'center' }}
               >
-                <FormControlLabel 
-                  value="file" 
-                  control={<Radio size="small" />} 
+                <FormControlLabel
+                  value="file"
+                  control={<Radio
+                    size="small"
+                    sx={{
+                      color: brand[500],
+                      '&.Mui-checked': {
+                        color: brand[700],
+                      },
+                      '&:hover': {
+                        color: brand[600],
+                      },
+                    }}
+                  />}
                   label={<Typography variant="caption">{t.upload.fileOptional}</Typography>}
                 />
-                <FormControlLabel 
-                  value="url" 
-                  control={<Radio size="small" />} 
+                <FormControlLabel
+                  value="url"
+                  control={<Radio
+                    size="small"
+                    sx={{
+                      color: brand[500],
+                      '&.Mui-checked': {
+                        color: brand[700],
+                      },
+                      '&:hover': {
+                        color: brand[600],
+                      },
+                    }}
+                  />}
                   label={<Typography variant="caption">URL</Typography>}
                 />
               </RadioGroup>
-              
+
               {currentInputType === 'file' ? (
                 <FileUpload
                   label={t.upload.fileOptional}
@@ -259,8 +300,7 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
         })}
         <IconButton
           onClick={handleAdd}
-          color="primary"
-          sx={{ alignSelf: 'flex-start' }}
+          sx={{ alignSelf: 'flex-start', color: brand[700], '&:hover': { color: brand[900] } }}
         >
           <AddIcon />
         </IconButton>

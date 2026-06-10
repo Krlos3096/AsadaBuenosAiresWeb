@@ -6,7 +6,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Footer.scss';
 import ContactsContainer from '../ContactsContainer';
 
-export default function Footer() {
+interface FooterProps {
+  collapsed?: boolean;
+}
+
+export default function Footer({ collapsed = false }: FooterProps) {
   return (
     <React.Fragment>
       <Container
@@ -28,9 +32,12 @@ export default function Footer() {
           sx={{
             py: 2,
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-end",
             justifyContent: "center",
             gap: 1,
+            height: collapsed ? { xs: "10dvh", md: "auto" } : { xs: "25dvh", md: "auto" },
+            transition: 'height 0.6s ease-in-out',
+            overflow: 'hidden',
           }}
         >
           <FavoriteIcon

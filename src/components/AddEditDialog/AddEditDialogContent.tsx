@@ -25,6 +25,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PaymentIcon from '@mui/icons-material/Payment';
+import { brand } from '../../shared-theme/themePrimitives';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8787';
 
@@ -326,6 +327,25 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                   error={!!errors[field.name]}
                   helperText={errors[field.name]}
                   multiline
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: brand[300],
+                      },
+                      '&:hover fieldset': {
+                        borderColor: brand[500],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: brand[700],
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: brand[700],
+                      '&.Mui-focused': {
+                        color: brand[700],
+                      },
+                    },
+                  }}
                   rows={field.rows || 4}
                 />
               ) : field.type === 'select' ? (
@@ -338,6 +358,25 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                   required={field.required}
                   error={!!errors[field.name]}
                   helperText={errors[field.name]}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: brand[300],
+                      },
+                      '&:hover fieldset': {
+                    '& .MuiInputLabel-root': {
+                      color: brand[700],
+                      '&.Mui-focused': {
+                        color: brand[700],
+                      },
+                    },
+                        borderColor: brand[500],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: brand[700],
+                      },
+                    },
+                  }}
                 >
                   {field.options?.map((option) => {
                     const IconComponent = iconComponentMap[option.value];
@@ -370,6 +409,25 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                   required={field.required}
                   error={!!errors[field.name]}
                   helperText={errors[field.name]}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: brand[300],
+                      },
+                      '&:hover fieldset': {
+                        borderColor: brand[500],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: brand[700],
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: brand[700],
+                      '&.Mui-focused': {
+                        color: brand[700],
+                      },
+                    },
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
               ) : field.type === 'image' ? (
@@ -389,6 +447,25 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                   required={field.required}
                   error={!!errors[field.name]}
                   helperText={errors[field.name]}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: brand[300],
+                      },
+                      '&:hover fieldset': {
+                        borderColor: brand[500],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: brand[700],
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: brand[700],
+                      '&.Mui-focused': {
+                        color: brand[700],
+                      },
+                    },
+                  }}
                 />
               )}
             </Box>
@@ -404,14 +481,14 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
           )}
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: 1 }}>
-          <Button disabled={isSaving} onClick={closeDialog}>
+          <Button disabled={isSaving} onClick={closeDialog} sx={{ color: brand[700], '&:hover': { backgroundColor: brand[50] } }}>
             {t.common.cancel}
           </Button>
           <Button
             onClick={handleSave}
             variant="contained"
             disabled={isSaving}
-            sx={{ backgroundColor: '#52bc52', '&:hover': { backgroundColor: '#032003' } }}
+            sx={{ backgroundColor: brand[700], '&:hover': { backgroundColor: brand[900] } }}
           >
             {isSaving ? t.common.loading : mode === 'add' ? t.common.add : t.common.save}
           </Button>
