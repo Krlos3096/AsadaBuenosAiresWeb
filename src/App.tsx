@@ -10,7 +10,6 @@ import {
   NuestraHistoria,
   Contactos,
   Footer,
-  ContactsContainer,
   ScrollToTop,
   LandscapeWarning
 } from './components';
@@ -38,7 +37,6 @@ function AppContent() {
           </Routes>
         </Box>
         <Footer />
-        <ContactsContainer />
       </Router>
     </AppTheme>
   );

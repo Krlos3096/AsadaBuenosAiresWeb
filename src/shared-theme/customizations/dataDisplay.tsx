@@ -111,16 +111,6 @@ export const dataDisplayCustomizations: Components<Theme> = {
               [`& .${chipClasses.icon}`]: {
                 color: gray[500],
               },
-              ...theme.applyStyles('dark', {
-                borderColor: gray[700],
-                backgroundColor: gray[800],
-                [`& .${chipClasses.label}`]: {
-                  color: gray[300],
-                },
-                [`& .${chipClasses.icon}`]: {
-                  color: gray[300],
-                },
-              }),
             },
           },
           {
@@ -136,16 +126,6 @@ export const dataDisplayCustomizations: Components<Theme> = {
               [`& .${chipClasses.icon}`]: {
                 color: brand[500],
               },
-              ...theme.applyStyles('dark', {
-                borderColor: blue[800],
-                backgroundColor: blue[900],
-                [`& .${chipClasses.label}`]: {
-                  color: blue[300],
-                },
-                [`& .${chipClasses.icon}`]: {
-                  color: blue[300],
-                },
-              }),
             },
           },
           {
@@ -161,16 +141,6 @@ export const dataDisplayCustomizations: Components<Theme> = {
               [`& .${chipClasses.icon}`]: {
                 color: red[500],
               },
-              ...theme.applyStyles('dark', {
-                borderColor: red[800],
-                backgroundColor: red[900],
-                [`& .${chipClasses.label}`]: {
-                  color: red[200],
-                },
-                [`& .${chipClasses.icon}`]: {
-                  color: red[300],
-                },
-              }),
             },
           },
           {

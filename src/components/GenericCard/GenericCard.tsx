@@ -202,7 +202,7 @@ const StyledCard = styled(Card)<{ cardvariant?: string }>(({ theme, cardvariant 
   flexDirection: 'column',
   padding: 0,
   height: '100%',
-  backgroundColor: (theme.vars || theme).palette.background.paper,
+  backgroundColor: (theme.vars || theme).palette.background.default,
   transition: cardvariant === 'service' || cardvariant === 'governance' 
     ? 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out'
     : 'none',

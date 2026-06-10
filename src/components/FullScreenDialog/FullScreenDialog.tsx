@@ -159,7 +159,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#1f7a1f',
+              backgroundColor: '#52bc52',
               color: 'primary.contrastText',
               border: "1px solid black",
               borderRadius: 2,

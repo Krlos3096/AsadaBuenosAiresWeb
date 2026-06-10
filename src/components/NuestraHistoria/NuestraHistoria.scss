@@ -5,7 +5,7 @@
 
 .stat-card {
   border-radius: 12px;
-  border: 2px solid #1f7a1f;
+  border: 2px solid #52bc52;
   background: linear-gradient(135deg, #f8fbff 0%, #e8f4fd 100%);
   transition: all 0.3s ease-in-out;
   
@@ -17,7 +17,7 @@
   .stat-number {
     font-size: 2.5rem;
     font-weight: 700;
-    background: linear-gradient(45deg, #1f7a1f, #0387be);
+    background: linear-gradient(45deg, #52bc52, #032003);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -39,19 +39,19 @@
 .timeline-dot {
   width: 56px;
   height: 56px;
-  border: 3px solid #1f7a1f;
+  border: 3px solid #52bc52;
   background-color: white;
   
   .MuiSvgIcon-root {
     font-size: 1.5rem;
-    color: #1f7a1f;
+    color: #52bc52;
   }
 }
 
 .timeline-content {
   .MuiPaper-root {
     border-radius: 8px;
-    border-left: 4px solid #1f7a1f;
+    border-left: 4px solid #52bc52;
     transition: all 0.3s ease-in-out;
     
     &:hover {
@@ -82,7 +82,7 @@
       transform: translateX(-50%);
       width: 60px;
       height: 3px;
-      background: linear-gradient(45deg, #1f7a1f, #0387be);
+      background: linear-gradient(45deg, #52bc52, #032003);
       border-radius: 2px;
     }
   }

@@ -21,16 +21,14 @@ import { LoginDialogContent } from '../LoginDialog';
 import AddEditDialogContent from '../AddEditDialog/AddEditDialogContent';
 import './AppBar.scss';
 import { KeyboardArrowUp, Menu, CloseRounded, Download, IosShare } from '@mui/icons-material';
+import Wave from 'react-wavify';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
   backdropFilter: 'blur(24px)',
-  border: '1px solid',
-  borderColor: (theme.vars || theme).palette.divider,
   backgroundColor: theme.vars
     ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
     : alpha(theme.palette.background.default, 0.4),
@@ -247,27 +245,81 @@ export default function AppBarComponent() {
       role="banner"
     >
       {/* Hero Section with Background Image */}
-      <ImageCarousel 
-        images={carouselImages} 
-        autoPlay={true} 
-        interval={4000} 
+      <ImageCarousel
+        images={carouselImages}
+        autoPlay={true}
+        interval={4000}
         collapsed={isCarouselCollapsed}
         showEditControls={isAuthenticated}
         currentPath={location.pathname}
         onEdit={handleEditSlide}
         onDelete={handleDeleteSlide}
         onAdd={handleAddSlide}
-        sx={{ 
-          position: 'relative',
+        sx={{
+          position: "relative",
           zIndex: 0,
-        }} 
+        }}
       />
-      <Container maxWidth="lg">
+      <Container
+        maxWidth={false}
+        disableGutters
+        sx={{ position: "relative", width: "100%", px: 0 }}
+      >
         <StyledToolbar
           variant="dense"
           disableGutters
-          sx={{ bgcolor: "#1f7a1f", border: "1px solid black", top: "-50px" }}
+          sx={{ bgcolor: "#52bc52", position: "relative", zIndex: 1 }}
         >
+          <Wave
+            paused={true}
+            fill="url(#gradient-behind)"
+            options={{
+              amplitude: 40,
+              speed: 6,
+              points: 7,
+            }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              zIndex: 0,
+              pointerEvents: "none",
+              height: "125px",
+            }}
+          >
+            <defs>
+              <linearGradient id="gradient-behind" gradientTransform="rotate(90)">
+                <stop offset="5%" stopColor="#52bc52" />
+                <stop offset="95%" stopColor="#042f04" />
+              </linearGradient>
+            </defs>
+          </Wave>
+          <Wave
+            paused={true}
+            fill="url(#gradient)"
+            options={{
+              amplitude: 40,
+              speed: 1,
+              points: 3,
+            }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              zIndex: 0,
+              pointerEvents: "none",
+              height: "125px",
+            }}
+          >
+            <defs>
+              <linearGradient id="gradient" gradientTransform="rotate(90)">
+                <stop offset="10%" stopColor="#52bc52" />
+                <stop offset="90%" stopColor="#042f04" />
+              </linearGradient>
+            </defs>
+          </Wave>
           <Box
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
           >
@@ -291,9 +343,7 @@ export default function AppBarComponent() {
                   backgroundColor: isActive("/")
                     ? "primary.dark"
                     : "transparent",
-                  color: isActive("/")
-                    ? "primary.contrastText"
-                    : "inherit",
+                  color: isActive("/") ? "primary.contrastText" : "inherit",
                 }}
               >
                 {t.nav.home}
@@ -393,15 +443,21 @@ export default function AppBarComponent() {
               size="small"
               onClick={isAuthenticated ? handleLogoutClick : handleLoginClick}
             >
-              {isAuthenticated ? `${t.auth.logout} (${user?.username})` : 'Portal Administrativo'}
+              {isAuthenticated
+                ? `${t.auth.logout} (${user?.username})`
+                : "Portal Administrativo"}
             </Button>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1}}>
+          <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
             {!isInstalled && (deferredPrompt || isIOS) && (
               <IconButton
                 aria-label="Install app"
                 onClick={handleInstallClick}
-                sx={{ border: "1px solid black", position: 'absolute', left: '1rem' }}
+                sx={{
+                  border: "1px solid black",
+                  position: "absolute",
+                  left: "1rem",
+                }}
               >
                 <Download />
               </IconButton>
@@ -421,7 +477,13 @@ export default function AppBarComponent() {
               onClick={toggleDrawer(!open)}
               sx={{ border: "1px solid black" }}
             >
-              {!isCarouselCollapsed ? <KeyboardArrowUp /> : (open ? <CloseRounded /> : <Menu />)}
+              {!isCarouselCollapsed ? (
+                <KeyboardArrowUp />
+              ) : open ? (
+                <CloseRounded />
+              ) : (
+                <Menu />
+              )}
             </IconButton>
             <Drawer
               anchor="top"
@@ -436,7 +498,7 @@ export default function AppBarComponent() {
                     marginRight: "8%",
                     border: "1px solid black",
                     borderRadius: "8px",
-                    paddingTop: "20px",
+                    paddingTop: "50px",
                   },
                 },
               }}
@@ -466,9 +528,13 @@ export default function AppBarComponent() {
                     color="secondary"
                     variant="contained"
                     fullWidth
-                    onClick={isAuthenticated ? handleLogoutClick : handleLoginClick}
+                    onClick={
+                      isAuthenticated ? handleLogoutClick : handleLoginClick
+                    }
                   >
-                    {isAuthenticated ? `${t.auth.logout} (${user?.username})` : 'Portal Administrativo'}
+                    {isAuthenticated
+                      ? `${t.auth.logout} (${user?.username})`
+                      : "Portal Administrativo"}
                   </Button>
                 </MenuItem>
               </Box>
