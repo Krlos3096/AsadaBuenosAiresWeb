@@ -83,9 +83,9 @@ const LoginDialogContent: React.FC<LoginDialogProps> = ({ onSuccess }) => {
               },
             },
             '& .MuiInputLabel-root': {
-              color: brand[700],
+              color: brand[500],
               '&.Mui-focused': {
-                color: brand[700],
+                color: brand[600],
               },
             },
           }}
@@ -127,16 +127,16 @@ const LoginDialogContent: React.FC<LoginDialogProps> = ({ onSuccess }) => {
                 borderColor: brand[300],
               },
               '&:hover fieldset': {
-            '& .MuiInputLabel-root': {
-              color: brand[700],
-              '&.Mui-focused': {
-                color: brand[700],
-              },
-            },
                 borderColor: brand[500],
               },
               '&.Mui-focused fieldset': {
                 borderColor: brand[700],
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: brand[500],
+              '&.Mui-focused': {
+                color: brand[600],
               },
             },
           }}

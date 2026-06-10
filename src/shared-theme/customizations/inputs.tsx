@@ -2,7 +2,6 @@ import { alpha, Theme, Components } from '@mui/material/styles';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { toggleButtonGroupClasses } from '@mui/material/ToggleButtonGroup';
-import { toggleButtonClasses } from '@mui/material/ToggleButton';
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
@@ -52,18 +51,38 @@ export const inputsCustomizations: Components<Theme> = {
           },
           {
             props: {
+              variant: 'contained',
+            },
+            style: {
+              fontWeight: 'bold',
+              color: brand[50],
+              backgroundColor: brand[700],
+              boxShadow: `inset 0 1px 0 ${brand[500]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
+              border: `1px solid ${brand[700]}`,
+              '&:hover': {
+                backgroundImage: 'none',
+                backgroundColor: brand[900],
+                boxShadow: 'none',
+              },
+              '&:active': {
+                backgroundColor: brand[800],
+              },
+            },
+          },
+          {
+            props: {
               color: 'primary',
               variant: 'contained',
             },
             style: {
               fontWeight: 'bold',
               color: brand[50],
-              backgroundColor: brand[900],
-              boxShadow: `inset 0 1px 0 ${brand[600]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
+              backgroundColor: brand[700],
+              boxShadow: `inset 0 1px 0 ${brand[500]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
               border: `1px solid ${brand[700]}`,
               '&:hover': {
                 backgroundImage: 'none',
-                backgroundColor: brand[700],
+                backgroundColor: brand[900],
                 boxShadow: 'none',
               },
               '&:active': {
@@ -97,16 +116,16 @@ export const inputsCustomizations: Components<Theme> = {
               variant: 'outlined',
             },
             style: {
-              color: (theme.vars || theme).palette.text.primary,
+              color: brand[700],
               border: '1px solid',
-              borderColor: brand[200],
+              borderColor: brand[300],
               backgroundColor: alpha(brand[50], 0.3),
               '&:hover': {
-                backgroundColor: brand[100],
-                borderColor: brand[300],
+                backgroundColor: brand[50],
+                borderColor: brand[700],
               },
               '&:active': {
-                backgroundColor: brand[200],
+                backgroundColor: brand[100],
               },
             },
           },
@@ -135,13 +154,13 @@ export const inputsCustomizations: Components<Theme> = {
             },
             style: {
               fontWeight: 'bold',
-              color: brand[50],
+              color: brand[700],
               '&:hover': {
-                color: brand[500],
-                backgroundColor: brand[100],
+                color: brand[900],
+                backgroundColor: brand[50],
               },
               '&:active': {
-                backgroundColor: brand[200],
+                backgroundColor: brand[100],
               },
             },
           },
@@ -172,16 +191,17 @@ export const inputsCustomizations: Components<Theme> = {
         textTransform: 'none',
         fontWeight: theme.typography.fontWeightMedium,
         letterSpacing: 0,
-        color: (theme.vars || theme).palette.text.primary,
+        color: brand[700],
         border: '1px solid ',
         borderColor: brand[200],
         backgroundColor: alpha(brand[50], 0.3),
         '&:hover': {
-          backgroundColor: brand[100],
+          color: brand[900],
+          backgroundColor: brand[50],
           borderColor: brand[300],
         },
         '&:active': {
-          backgroundColor: brand[200],
+          backgroundColor: brand[100],
         },
         variants: [
           {
@@ -320,23 +340,12 @@ export const inputsCustomizations: Components<Theme> = {
           },
         ],
       }),
-      notchedOutline: {
-        border: 'none',
-      },
     },
   },
   MuiInputAdornment: {
     styleOverrides: {
       root: ({ theme }) => ({
         color: (theme.vars || theme).palette.grey[500],
-      }),
-    },
-  },
-  MuiFormLabel: {
-    styleOverrides: {
-      root: ({ theme }) => ({
-        typography: theme.typography.caption,
-        marginBottom: 8,
       }),
     },
   },

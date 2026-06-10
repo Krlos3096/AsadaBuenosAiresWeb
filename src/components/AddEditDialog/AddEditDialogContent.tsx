@@ -340,9 +340,9 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                       },
                     },
                     '& .MuiInputLabel-root': {
-                      color: brand[700],
+                      color: brand[500],
                       '&.Mui-focused': {
-                        color: brand[700],
+                        color: brand[600],
                       },
                     },
                   }}
@@ -364,16 +364,16 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                         borderColor: brand[300],
                       },
                       '&:hover fieldset': {
-                    '& .MuiInputLabel-root': {
-                      color: brand[700],
-                      '&.Mui-focused': {
-                        color: brand[700],
-                      },
-                    },
                         borderColor: brand[500],
                       },
                       '&.Mui-focused fieldset': {
                         borderColor: brand[700],
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: brand[500],
+                      '&.Mui-focused': {
+                        color: brand[600],
                       },
                     },
                   }}
@@ -422,9 +422,9 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                       },
                     },
                     '& .MuiInputLabel-root': {
-                      color: brand[700],
+                      color: brand[500],
                       '&.Mui-focused': {
-                        color: brand[700],
+                        color: brand[600],
                       },
                     },
                   }}
@@ -460,9 +460,9 @@ export default function AddEditDialogContent({ onSave, contentType, initialData,
                       },
                     },
                     '& .MuiInputLabel-root': {
-                      color: brand[700],
+                      color: brand[500],
                       '&.Mui-focused': {
-                        color: brand[700],
+                        color: brand[600],
                       },
                     },
                   }}
