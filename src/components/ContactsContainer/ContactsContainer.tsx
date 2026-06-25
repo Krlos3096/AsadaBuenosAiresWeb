@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import BuildIcon from '@mui/icons-material/BuildCircle';
+import FeedBackIcon from '@mui/icons-material/Feedback';
 import ContactFloat from '../ContactFloat/ContactFloat';
 import './ContactsContainer.scss';
 import { useLocation } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { DataService } from '../../services/dataService';
 import { useAuth } from '../../context/AuthContext';
 import { useDialog } from '../../context/DialogContext';
 import AddEditDialogContent from '../AddEditDialog/AddEditDialogContent';
+import ComplaintForm from '../ComplaintForm/ComplaintForm';
 
 const ContactsContainer: React.FC = () => {
   const [whatsappPhoneInfo, setWhatsappPhoneInfo] = useState<string>('');
@@ -32,6 +33,37 @@ const ContactsContainer: React.FC = () => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al cargar datos';
       alert(errorMessage);
+    }
+  };
+
+  const isEmail = (value: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
+  const handleWhatsAppSupportClick = () => {
+    if (isAuthenticated) {
+      handleEditWhatsAppSupport();
+    } else {
+      if (isEmail(whatsappPhoneSupport)) {
+        openDialog({
+          title: 'Enviar Queja',
+          icon: 'Email',
+          content: (
+            <ComplaintForm
+              to={whatsappPhoneSupport}
+              onSuccess={() => {
+                closeDialog();
+                alert('Queja enviada exitosamente');
+              }}
+              onCancel={() => closeDialog()}
+            />
+          ),
+          maxWidth: 'sm',
+          fullWidth: true
+        });
+      }
+      // If it's a phone number, let the default link behavior work (opens WhatsApp)
     }
   };
 
@@ -154,11 +186,11 @@ const ContactsContainer: React.FC = () => {
         )}
         {whatsappPhoneSupport && (
           <ContactFloat
-            icon={<BuildIcon />}
-            link={`https://wa.me/${whatsappPhoneSupport.replace(/[^\d]/g, "")}`}
-            tooltipTitle="WhatsApp Averias"
-            ariaLabel="WhatsApp Averias"
-            onClick={isAuthenticated ? handleEditWhatsAppSupport : undefined}
+            icon={<FeedBackIcon />}
+            link={isEmail(whatsappPhoneSupport) ? undefined : `https://wa.me/${whatsappPhoneSupport.replace(/[^\d]/g, "")}`}
+            tooltipTitle={isEmail(whatsappPhoneSupport) ? "Enviar Queja" : "WhatsApp Averias"}
+            ariaLabel={isEmail(whatsappPhoneSupport) ? "Enviar Queja" : "WhatsApp Averias"}
+            onClick={handleWhatsAppSupportClick}
           />
         )}
         {facebookUrl && (

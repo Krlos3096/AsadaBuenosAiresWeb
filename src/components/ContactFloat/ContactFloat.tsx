@@ -4,14 +4,14 @@ import './ContactFloat.scss';
 
 interface ContactFloatProps {
   icon: React.ReactElement;
-  link: string;
+  link?: string;
   tooltipTitle: string;
   ariaLabel: string;
   target?: '_blank' | '_self';
   onClick?: () => void;
 }
 
-const ContactFloat: React.FC<ContactFloatProps> = ({ 
+const ContactFloat: React.FC<ContactFloatProps> = ({
   icon,
   link,
   tooltipTitle,
@@ -22,10 +22,12 @@ const ContactFloat: React.FC<ContactFloatProps> = ({
   const handleClick = () => {
     if (onClick) {
       onClick();
-    } else if (link.startsWith('mailto:')) {
-      window.location.href = link;
-    } else {
-      window.open(link, target);
+    } else if (link) {
+      if (link.startsWith('mailto:')) {
+        window.location.href = link;
+      } else {
+        window.open(link, target);
+      }
     }
   };
 

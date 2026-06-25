@@ -471,4 +471,19 @@ export const DataService = {
       },
     });
   },
+
+  sendComplaint: async (to: string, message: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/send-complaint`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ to, message }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al enviar queja');
+    }
+  },
 };

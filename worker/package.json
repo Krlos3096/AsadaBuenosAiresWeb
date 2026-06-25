@@ -10,6 +10,9 @@
     "tail": "wrangler tail",
     "migrate": "tsx migrate.ts"
   },
+  "dependencies": {
+    "resend": "^3.2.0"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
     "@types/node": "^20.11.0",

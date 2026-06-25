@@ -12,12 +12,14 @@ import {
   isValidFileSize,
   getContentType,
 } from './r2';
+import { Resend } from 'resend';
 
 interface Env {
   asada_buenosaires_db: D1Database;
   JWT_SECRET: string;
   asada_buenosaires_images: R2Bucket;
   IMAGE_BASE_URL: string;
+  RESEND_API_KEY: string;
 }
 
 // Helper function to parse JSON body
@@ -523,6 +525,41 @@ async function updateContacts(request: Request, env: Env): Promise<Response> {
   }
 }
 
+// POST /send-complaint
+async function sendComplaintEmail(request: Request, env: Env): Promise<Response> {
+  const body = await parseBody(request);
+
+  if (!body || !body.to || !body.message) {
+    return errorResponse('Faltan campos requeridos: destinatario, mensaje', 400);
+  }
+
+  try {
+    const resend = new Resend(env.RESEND_API_KEY);
+    console.log(env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: body.to,
+      subject: 'Queja de usuario',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #52bc52;">Queja de Usuario</h2>
+          <p>Se ha recibido una nueva queja:</p>
+          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0; white-space: pre-wrap;">${body.message}</p>
+          </div>
+          <p style="color: #666; font-size: 14px;">Este mensaje fue enviado desde el formulario de quejas de Asada Buenos Aires.</p>
+        </div>
+      `,
+    });
+
+    return jsonResponse({ success: true, message: 'Queja enviada exitosamente' });
+  } catch (error: any) {
+    console.error('Error al enviar email:', error);
+    return errorResponse('Error al enviar la queja', 500);
+  }
+}
+
 // ==================== HOME SLIDES ENDPOINTS ====================
 
 // GET /home-slides
@@ -911,6 +948,9 @@ export default {
     }
     if (path === '/contacts' && method === 'PUT') {
       return updateContacts(request, env);
+    }
+    if (path === '/send-complaint' && method === 'POST') {
+      return sendComplaintEmail(request, env);
     }
 
     // ==================== HOME SLIDES ROUTES ====================

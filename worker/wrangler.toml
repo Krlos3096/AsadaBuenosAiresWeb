@@ -29,6 +29,7 @@ binding = "asada_buenosaires_images"
 [env.production.vars]
 ENVIRONMENT = "production"
 IMAGE_BASE_URL = "https://cdn.asadabuenosaires.com"
+# RESEND_API_KEY should be set via: wrangler secret put RESEND_API_KEY --env production
 
 # Staging environment
 [env.staging]
@@ -52,6 +53,7 @@ binding = "asada_buenosaires_images"
 [env.staging.vars]
 ENVIRONMENT = "staging"
 IMAGE_BASE_URL = "https://cdn-staging.asadabuenosaires.com"
+# RESEND_API_KEY should be set via: wrangler secret put RESEND_API_KEY --env staging
 
 # Local development configuration (default)
 # D1 Database binding
@@ -74,3 +76,4 @@ IMAGE_BASE_URL = "http://localhost:8787/images"
 # For local development only. Use wrangler secret put for production.
 # JWT_SECRET should be set via: wrangler secret put JWT_SECRET
 # or via .dev.vars file for local development
+# RESEND_API_KEY should be set via .dev.vars file for local development
