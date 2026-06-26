@@ -412,6 +412,22 @@ export default function AppBarComponent() {
               >
                 {t.nav.about}
               </Button>
+              <Button
+                variant="text"
+                color="primary"
+                size="small"
+                onClick={() => handleNavigation("/datos")}
+                sx={{
+                  backgroundColor: isActive("/datos")
+                    ? "primary.dark"
+                    : "transparent",
+                  color: isActive("/datos")
+                    ? "primary.contrastText"
+                    : "inherit",
+                }}
+              >
+                {t.nav.data}
+              </Button>
             </Box>
           </Box>
           <Box
@@ -518,6 +534,9 @@ export default function AppBarComponent() {
                 </MenuItem>
                 <MenuItem onClick={() => handleNavigation("/nuestra-historia")}>
                   {t.nav.about}
+                </MenuItem>
+                <MenuItem onClick={() => handleNavigation("/datos")}>
+                  {t.nav.data}
                 </MenuItem>
                 <MenuItem onClick={() => handleNavigation("/contactos")}>
                   {t.nav.contacts}

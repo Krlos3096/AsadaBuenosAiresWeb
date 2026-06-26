@@ -36,6 +36,7 @@ export const es = {
     services: 'Gestiones',
     contacts: 'Contactos',
     about: 'Nuestra Historia',
+    data: 'Datos',
   },
 
   // Cards

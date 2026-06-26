@@ -804,8 +804,21 @@ async function deleteTimelineItem(request: Request, env: Env, id: string): Promi
 // ==================== STATS ENDPOINTS ====================
 
 // GET /stats
-async function getStats(env: Env): Promise<Response> {
-  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM stats ORDER BY sort_order').all();
+async function getStats(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const sortOrder = url.searchParams.get('sort_order');
+
+  let query = 'SELECT * FROM stats';
+  let params: any[] = [];
+
+  if (sortOrder !== null) {
+    query += ' WHERE sort_order = ?';
+    params.push(sortOrder);
+  } else {
+    query += ' ORDER BY sort_order';
+  }
+
+  const result = await env.asada_buenosaires_db.prepare(query).bind(...params).all();
 
   return jsonResponse(result.results || []);
 }
@@ -825,7 +838,7 @@ async function updateStats(request: Request, env: Env): Promise<Response> {
 
   try {
     // Delete all existing stats
-    await env.asada_buenosaires_db.prepare('DELETE FROM stats').run();
+    await env.asada_buenosaires_db.prepare('DELETE FROM stats WHERE sort_order = 0').run();
 
     // Insert new stats
     for (const stat of body) {
@@ -837,7 +850,37 @@ async function updateStats(request: Request, env: Env): Promise<Response> {
       ).bind(stat.number, stat.label, stat.sort_order || 0).run();
     }
 
-    return getStats(env);
+    return getStats(request, env);
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
+// PUT /stats/:id (update individual stat)
+async function updateStat(request: Request, env: Env, id: string): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  const body = await parseBody(request);
+
+  if (!body) {
+    return errorResponse('El cuerpo de la solicitud es requerido');
+  }
+
+  try {
+    const { number, label, sort_order } = body;
+
+    if (!number || !label) {
+      return errorResponse('Los campos number y label son requeridos');
+    }
+
+    await env.asada_buenosaires_db.prepare(
+      'UPDATE stats SET number = ?, label = ?, sort_order = ? WHERE id = ?'
+    ).bind(number, label, sort_order || 0, id).run();
+
+    return jsonResponse({ success: true, message: 'Estadística actualizada exitosamente' });
   } catch (error: any) {
     return errorResponse(error.message, 500);
   }
@@ -906,7 +949,7 @@ export default {
       return new Response(null, {
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
       });
@@ -987,10 +1030,14 @@ export default {
 
     // ==================== STATS ROUTES ====================
     if (path === '/stats' && method === 'GET') {
-      return getStats(env);
+      return getStats(request, env);
     }
     if (path === '/stats' && method === 'PUT') {
       return updateStats(request, env);
+    }
+    if (path.startsWith('/stats/') && method === 'PUT') {
+      const id = path.split('/')[2];
+      return updateStat(request, env, id);
     }
 
     // ==================== ABOUT CONTENT ROUTES ====================

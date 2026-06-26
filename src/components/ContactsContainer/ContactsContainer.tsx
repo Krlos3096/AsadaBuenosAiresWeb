@@ -106,7 +106,7 @@ const ContactsContainer: React.FC = () => {
     if (!isAuthenticated) return;
     
     openDialog({
-      title: 'Editar WhatsApp Averías',
+      title: 'Editar Contacto de Quejas/Averías',
       icon: 'Edit',
       content: (
         <AddEditDialogContent

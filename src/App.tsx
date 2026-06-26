@@ -8,6 +8,7 @@ import {
   Gestiones,
   Gobernanza,
   NuestraHistoria,
+  Datos,
   Contactos,
   Footer,
   ScrollToTop,
@@ -44,8 +45,9 @@ function AppRoutes() {
           <Route path="/noticias" element={<Noticias />} />
           <Route path="/gestiones" element={<Gestiones />} />
           <Route path="/gobernanza" element={<Gobernanza />} />
-          <Route path="/contactos" element={<Contactos />} />
           <Route path="/nuestra-historia" element={<NuestraHistoria />} />
+          <Route path="/datos" element={<Datos />} />
+          <Route path="/contactos" element={<Contactos />} />
         </Routes>
       </Box>
       <Footer collapsed={!isHomePage} />

@@ -54,6 +54,10 @@ async function apiFetch<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  if (requireAuth && !token) {
+    throw new Error('Authentication required');
+  }
+
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       headers,
@@ -256,13 +260,21 @@ export const DataService = {
     };
   },
   
-  getStatsData: async (): Promise<Stat[] | undefined> => {
+  getStatsData: async (sortOrder?: number): Promise<Stat[] | undefined> => {
     try {
-      return await apiFetch<Stat[]>('/stats', {}, false);
+      const url = sortOrder !== undefined ? `/stats?sort_order=${sortOrder}` : '/stats';
+      return await apiFetch<Stat[]>(url, {}, false);
     } catch (error) {
       console.error('Failed to fetch stats:', error);
       return undefined;
     }
+  },
+
+  updateStat: async (id: string, number: string, label: string, sort_order?: number): Promise<void> => {
+    return apiFetch(`/stats/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ number, label, sort_order }),
+    }, true);
   },
   
   getMission: async () => {

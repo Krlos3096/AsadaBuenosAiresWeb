@@ -9,11 +9,14 @@ import { brand } from '../../shared-theme/themePrimitives';
 
 export interface DynamicItemsInputProps {
   label?: string;
-  value: string[];
-  onChange: (items: string[]) => void;
+  value?: string[];
+  onChange?: (items: string[]) => void;
   placeholder?: string;
   onFilesToDelete?: (fileUrls: string[]) => void;
   onItemFileChange?: (index: number, file: File | null, oldKey: string | undefined) => void;
+  mode?: 'default' | 'chart';
+  chartData?: Array<{ label: string; value: number }>;
+  onChartDataChange?: (data: Array<{ label: string; value: number }>) => void;
 }
 
 const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
@@ -22,7 +25,10 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
   onChange,
   placeholder = 'Ingresa un valor',
   onFilesToDelete,
-  onItemFileChange
+  onItemFileChange,
+  mode = 'default',
+  chartData = [],
+  onChartDataChange
 }) => {
   const { t } = useTranslation();
   // Internal state to track file URLs for each item
@@ -33,6 +39,108 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
   const [originalFileUrls, setOriginalFileUrls] = useState<Record<number, string>>({});
   // Track local files for each item
   const [localFiles, setLocalFiles] = useState<Record<number, File>>({});
+
+  // Chart mode handlers
+  const handleChartLabelChange = (index: number, newLabel: string) => {
+    const updatedData = [...chartData];
+    updatedData[index] = { ...updatedData[index], label: newLabel };
+    if (onChartDataChange) onChartDataChange(updatedData);
+  };
+
+  const handleChartValueChange = (index: number, newValue: string) => {
+    const updatedData = [...chartData];
+    const numValue = Number(newValue);
+    updatedData[index] = { ...updatedData[index], value: isNaN(numValue) ? 0 : numValue };
+    if (onChartDataChange) onChartDataChange(updatedData);
+  };
+
+  const handleChartDateChange = (index: number, dateString: string) => {
+    handleChartLabelChange(index, dateString);
+  };
+
+  const handleChartAdd = () => {
+    const updatedData = [...chartData, { label: '', value: 0 }];
+    if (onChartDataChange) onChartDataChange(updatedData);
+  };
+
+  const handleChartRemove = (index: number) => {
+    const updatedData = chartData.filter((_, i) => i !== index);
+    if (onChartDataChange) onChartDataChange(updatedData);
+  };
+
+  // Render chart mode
+  if (mode === 'chart') {
+    return (
+      <Box>
+        {label && (
+          <Box sx={{ mb: 1 }}>
+            <label style={{ fontWeight: 500 }}>{label}</label>
+          </Box>
+        )}
+        <Stack spacing={2}>
+          {chartData.map((item, index) => (
+            <Box key={`chart-item-${index}`} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <TextField
+                label="Fecha"
+                value={item.label}
+                onChange={(e) => handleChartDateChange(index, e.target.value)}
+                placeholder="DD/MM/YYYY"
+                size="small"
+                fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: brand[300],
+                    },
+                    '&:hover fieldset': {
+                      borderColor: brand[500],
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: brand[700],
+                    },
+                  },
+                }}
+              />
+              <TextField
+                label="Valor"
+                value={item.value}
+                onChange={(e) => handleChartValueChange(index, e.target.value)}
+                size="small"
+                sx={{
+                  width: 120,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: brand[300],
+                    },
+                    '&:hover fieldset': {
+                      borderColor: brand[500],
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: brand[700],
+                    },
+                  },
+                }}
+              />
+              <IconButton
+                onClick={() => handleChartRemove(index)}
+                size="small"
+                sx={{ color: brand[700], '&:hover': { color: brand[900] } }}
+                aria-label={t.common.delete}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          ))}
+          <IconButton
+            onClick={handleChartAdd}
+            sx={{ alignSelf: 'flex-start', color: brand[700], '&:hover': { color: brand[900] } }}
+          >
+            <AddIcon />
+          </IconButton>
+        </Stack>
+      </Box>
+    );
+  }
 
   // Parse text from pipe-delimited string
   const parseText = (str: string): string => {
@@ -59,27 +167,11 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
     return url.startsWith('http://') || url.startsWith('https://');
   };
 
-  // Auto-detect input type when value changes
-  React.useEffect(() => {
-    value.forEach((item, index) => {
-      const fileUrl = parseFileUrl(item);
-      if (fileUrl && !isExternalUrl(fileUrl)) {
-        // Track original file URLs (only for R2 files, not external URLs)
-        setOriginalFileUrls(prev => ({ ...prev, [index]: fileUrl }));
-      }
-      if (fileUrl && isExternalUrl(fileUrl)) {
-        setInputTypes(prev => ({ ...prev, [index]: 'url' }));
-      } else if (!inputTypes[index]) {
-        setInputTypes(prev => ({ ...prev, [index]: 'file' }));
-      }
-    });
-  }, [value, inputTypes]);
-
   const handleChange = (index: number, newText: string) => {
     const fileUrl = fileUrls[index] || parseFileUrl(value[index]);
     const updatedItems = [...value];
     updatedItems[index] = joinTextAndFile(newText, fileUrl);
-    onChange(updatedItems);
+    onChange?.(updatedItems);
   };
 
   const handleFileChange = (index: number, fileUrl: string | undefined) => {
@@ -89,7 +181,7 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
     const text = parseText(value[index]);
     const updatedItems = [...value];
     updatedItems[index] = joinTextAndFile(text, fileUrl);
-    onChange(updatedItems);
+    onChange?.(updatedItems);
   };
 
   const handleItemFileChange = (index: number, file: File | null, oldKey: string | undefined) => {
@@ -115,7 +207,7 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
         return updated;
       });
     }
-    
+
     // Also notify parent component for upload tracking
     if (onItemFileChange) {
       onItemFileChange(index, file, oldKey);
@@ -129,50 +221,50 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
     const text = parseText(value[index]);
     const updatedItems = [...value];
     updatedItems[index] = joinTextAndFile(text, url);
-    onChange(updatedItems);
+    onChange?.(updatedItems);
   };
 
   const handleInputTypeChange = (index: number, type: 'file' | 'url') => {
     const currentType = inputTypes[index] || 'file';
     const currentFileUrl = fileUrls[index] || parseFileUrl(value[index]);
-    
+
     // If switching from file to URL and there's an R2 file, mark it for deletion
     if (currentType === 'file' && type === 'url' && currentFileUrl && !isExternalUrl(currentFileUrl)) {
       if (onFilesToDelete) {
         onFilesToDelete([currentFileUrl]);
       }
     }
-    
+
     const updatedInputTypes = { ...inputTypes, [index]: type };
     setInputTypes(updatedInputTypes);
-    
+
     // Don't clear the file/url when switching types, just change the type
     // This allows users to toggle between views without losing their data
   };
 
   const handleAdd = () => {
-    onChange([...value, '']);
+    onChange?.([...value, '']);
   };
 
   const handleRemove = (index: number) => {
     const currentFileUrl = fileUrls[index] || parseFileUrl(value[index]);
-    
+
     // Track file for deletion (will be deleted on save)
     if (currentFileUrl && !isExternalUrl(currentFileUrl)) {
       if (onFilesToDelete) {
         onFilesToDelete([currentFileUrl]);
       }
     }
-    
+
     const updatedItems = value.filter((_, i) => i !== index);
     const updatedFileUrls = { ...fileUrls };
     delete updatedFileUrls[index];
     setFileUrls(updatedFileUrls);
-    
+
     const updatedInputTypes = { ...inputTypes };
     delete updatedInputTypes[index];
     setInputTypes(updatedInputTypes);
-    
+
     const updatedOriginalFileUrls = { ...originalFileUrls };
     delete updatedOriginalFileUrls[index];
     setOriginalFileUrls(updatedOriginalFileUrls);
@@ -180,8 +272,8 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
     const updatedLocalFiles = { ...localFiles };
     delete updatedLocalFiles[index];
     setLocalFiles(updatedLocalFiles);
-    
-    onChange(updatedItems);
+
+    onChange?.(updatedItems);
   };
 
   return (
@@ -195,7 +287,7 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
         {value.map((item, index) => {
           const currentInputType = inputTypes[index] || 'file';
           const currentFileUrl = fileUrls[index] || parseFileUrl(item);
-          
+
           return (
             <Box key={index} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
@@ -234,7 +326,7 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Box>
-              
+
               <RadioGroup
                 row
                 value={currentInputType}

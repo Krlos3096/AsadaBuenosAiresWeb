@@ -133,7 +133,7 @@ export default function NuestraHistoria() {
       try {
         const [timeline, stats, missionData, visionData] = await Promise.all([
           DataService.getTimeItemsData(),
-          DataService.getStatsData(),
+          DataService.getStatsData(0),
           DataService.getMission(),
           DataService.getVision()
         ]);
@@ -226,7 +226,7 @@ export default function NuestraHistoria() {
               const updatedStats = [...statsData];
               updatedStats[index] = data;
               await DataService.updateStats(updatedStats);
-              const newStats = await DataService.getStatsData();
+              const newStats = await DataService.getStatsData(0);
               setStatsData(newStats || []);
               closeDialog();
             } catch (error) {
