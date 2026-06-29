@@ -4,39 +4,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Footer.scss';
-import Wave from 'react-wavify';
+import ContactsContainer from '../ContactsContainer';
 
-export default function Footer() {
+interface FooterProps {
+  collapsed?: boolean;
+}
+
+export default function Footer({ collapsed = false }: FooterProps) {
   return (
     <React.Fragment>
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 999,
-          height: { xs: "25%", md: "15%" },
-        }}
-      >
-        <Wave mask="url(#mask)" fill="#04A6DB">
-          <defs>
-            <linearGradient id="gradient" gradientTransform="rotate(90)">
-              <stop offset="0" stopColor="white" />
-              <stop offset="0.5" stopColor="black" />
-            </linearGradient>
-            <mask id="mask">
-              <rect
-                x="0"
-                y="0"
-                width="2000"
-                height="200"
-                fill="url(#gradient)"
-              />
-            </mask>
-          </defs>
-        </Wave>
-      </Box>
       <Container
         maxWidth={false}
         sx={{
@@ -44,39 +20,44 @@ export default function Footer() {
           bottom: 0,
           right: 0,
           left: 0,
-          backgroundColor: "white",
+          backgroundColor: "#042f04",
           zIndex: 1000,
-          width: { xs: "100%", md: "50%" },
-          borderRadius: "16px",
+          width: "100%",
           border: "1px solid",
           borderColor: "divider",
         }}
       >
+        <ContactsContainer />
         <Box
           sx={{
             py: 2,
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-end",
             justifyContent: "center",
             gap: 1,
+            height: collapsed ? { xs: "10dvh", md: "auto" } : { xs: "25dvh", md: "auto" },
+            transition: 'height 0.6s ease-in-out',
+            overflow: 'hidden',
           }}
         >
           <FavoriteIcon
             sx={{
               fontSize: "2rem",
-              color: "primary.main", // Match AppBar primary color
+              color: "white",
+              fontWeight: 700,
             }}
           />
           <Typography
             variant="body1"
             sx={{
               textAlign: "center",
-              color: "text.secondary",
+              color: "white",
               fontSize: "0.875rem",
+              fontWeight: 700,
             }}
           >
             Esta página fue creada con amor por el agua potable y la comunidad
-            de suerre
+            de Buenos Aires
           </Typography>
         </Box>
       </Container>

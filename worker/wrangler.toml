@@ -1,4 +1,4 @@
-name = "asada-suerre-api"
+name = "asada-buenosaires-api"
 main = "index.ts"
 compatibility_date = "2024-01-01"
 
@@ -9,61 +9,63 @@ compatibility_date = "2024-01-01"
 
 # Production environment
 [env.production]
-name = "asada-suerre-api-prod"
+name = "asada-buenosaires-api-prod"
 routes = [
-  { pattern = "api.acueductosuerre.com/*", zone_name = "acueductosuerre.com" }
+  { pattern = "api.asadabuenosaires.com/*", zone_name = "asadabuenosaires.com" }
 ]
 
 # Production D1 binding
 [[env.production.d1_databases]]
-binding = "asada_suerre_db"
-database_name = "asada-suerre-db-prod"
+binding = "asada_buenosaires_db"
+database_name = "asada-buenosaires-db-prod"
 database_id = "d0625d80-af80-4532-81fd-4c043f24d98d" # Replace with actual ID after creation
 
 # Production R2 binding
 [[env.production.r2_buckets]]
-bucket_name = "asada-suerre-images-prod"
-binding = "asada_suerre_images"
+bucket_name = "asada-buenosaires-images-prod"
+binding = "asada_buenosaires_images"
 
 # Production environment variables
 [env.production.vars]
 ENVIRONMENT = "production"
-IMAGE_BASE_URL = "https://cdn.acueductosuerre.com"
+IMAGE_BASE_URL = "https://cdn.asadabuenosaires.com"
+# RESEND_API_KEY should be set via: wrangler secret put RESEND_API_KEY --env production
 
 # Staging environment
 [env.staging]
-name = "asada-suerre-api-staging"
+name = "asada-buenosaires-api-staging"
 routes = [
-  { pattern = "api-staging.acueductosuerre.com/*", zone_name = "acueductosuerre.com" }
+  { pattern = "api-staging.asadabuenosaires.com/*", zone_name = "asadabuenosaires.com" }
 ]
 
 # Staging D1 binding
 [[env.staging.d1_databases]]
-binding = "asada_suerre_db"
-database_name = "asada-suerre-db-staging"
+binding = "asada_buenosaires_db"
+database_name = "asada-buenosaires-db-staging"
 database_id = "8e4d1285-cb1a-48ec-a80d-f7b8b6290c29" # Replace with actual ID after creation
 
 # Staging R2 binding
 [[env.staging.r2_buckets]]
-bucket_name = "asada-suerre-images-staging"
-binding = "asada_suerre_images"
+bucket_name = "asada-buenosaires-images-staging"
+binding = "asada_buenosaires_images"
 
 # Staging environment variables
 [env.staging.vars]
 ENVIRONMENT = "staging"
-IMAGE_BASE_URL = "https://cdn-staging.acueductosuerre.com"
+IMAGE_BASE_URL = "https://cdn-staging.asadabuenosaires.com"
+# RESEND_API_KEY should be set via: wrangler secret put RESEND_API_KEY --env staging
 
 # Local development configuration (default)
 # D1 Database binding
 [[d1_databases]]
-binding = "asada_suerre_db"
-database_name = "asada-suerre-db"
-database_id = "2e128980-9cfb-4fe0-9526-c9b6880f2a1d"
+binding = "asada_buenosaires_db"
+database_name = "asada-buenosaires-db"
+database_id = "3973a8e7-0ab3-465e-acc7-4f012a8f6b69"
 
 # R2 Bucket binding for images
 [[r2_buckets]]
-bucket_name = "asada-suerre-images"
-binding = "asada_suerre_images"
+bucket_name = "asada-buenosaires-images"
+binding = "asada_buenosaires_images"
 
 # Local development environment variables
 [vars]
@@ -74,3 +76,4 @@ IMAGE_BASE_URL = "http://localhost:8787/images"
 # For local development only. Use wrangler secret put for production.
 # JWT_SECRET should be set via: wrangler secret put JWT_SECRET
 # or via .dev.vars file for local development
+# RESEND_API_KEY should be set via .dev.vars file for local development

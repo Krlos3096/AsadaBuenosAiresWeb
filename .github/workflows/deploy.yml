@@ -57,7 +57,7 @@ jobs:
     
     environment:
       name: production
-      url: https://api.acueductosuerre.com
+      url: https://api.asadabuenosaires.com
     
     steps:
       - name: Checkout code
@@ -97,7 +97,7 @@ jobs:
     
     environment:
       name: staging
-      url: https://api-staging.acueductosuerre.com
+      url: https://api-staging.asadabuenosaires.com
     
     steps:
       - name: Checkout code
@@ -132,7 +132,7 @@ jobs:
     
     environment:
       name: production
-      url: https://www.acueductosuerre.com
+      url: https://www.asadabuenosaires.com
     
     steps:
       - name: Checkout code
@@ -159,7 +159,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: asada-suerre-web
+          projectName: asada-buenosaires-web
           directory: build
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
       
@@ -177,7 +177,7 @@ jobs:
     
     environment:
       name: staging
-      url: https://staging.acueductosuerre.com
+      url: https://staging.asadabuenosaires.com
     
     steps:
       - name: Checkout code
@@ -204,7 +204,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: asada-suerre-web-staging
+          projectName: asada-buenosaires-web-staging
           directory: build
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: staging

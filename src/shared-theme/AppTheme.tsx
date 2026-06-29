@@ -28,9 +28,9 @@ export default function AppTheme(props: AppThemeProps) {
             colorSchemeSelector: 'data-mui-color-scheme',
             cssVarPrefix: 'template',
           },
-          // Only use light color scheme and force it as default
+          // Only use main color scheme and force it as default
           colorSchemes: {
-            light: colorSchemes.light
+            light: colorSchemes.main
           },
           // Force light mode by default
           defaultColorScheme: 'light',

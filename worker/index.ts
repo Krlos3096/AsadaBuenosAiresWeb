@@ -12,12 +12,14 @@ import {
   isValidFileSize,
   getContentType,
 } from './r2';
+import { Resend } from 'resend';
 
 interface Env {
-  asada_suerre_db: D1Database;
+  asada_buenosaires_db: D1Database;
   JWT_SECRET: string;
-  asada_suerre_images: R2Bucket;
+  asada_buenosaires_images: R2Bucket;
   IMAGE_BASE_URL: string;
+  RESEND_API_KEY: string;
 }
 
 // Helper function to parse JSON body
@@ -109,7 +111,7 @@ async function login(request: Request, env: Env): Promise<Response> {
 
   try {
     // Find admin by username
-    const admin = await env.asada_suerre_db.prepare(
+    const admin = await env.asada_buenosaires_db.prepare(
       'SELECT id, username, password_hash FROM admins WHERE username = ?'
     ).bind(body.username).first();
 
@@ -161,7 +163,7 @@ async function getCurrentUser(request: Request, env: Env): Promise<Response> {
   }
 
   try {
-    const admin = await env.asada_suerre_db.prepare(
+    const admin = await env.asada_buenosaires_db.prepare(
       'SELECT id, username, created_at FROM admins WHERE id = ?'
     ).bind(payload.sub).first();
 
@@ -215,7 +217,7 @@ async function getCards(request: Request, env: Env): Promise<Response> {
 
   // Get single card with relations
   if (id) {
-    const card = await env.asada_suerre_db.prepare(`
+    const card = await env.asada_buenosaires_db.prepare(`
       SELECT 
         c.id as card_id, c.title, c.description, c.date, c.image, c.subtitle, c.tag, c.badge,
         c.icon, c.url, c.google_maps_url as google_maps_url, c.variant, c.sort_order,
@@ -257,7 +259,7 @@ async function getCards(request: Request, env: Env): Promise<Response> {
 
   query += ' ORDER BY c.sort_order ASC, c.id DESC, ci.id ASC';
 
-  const stmt = env.asada_suerre_db.prepare(query);
+  const stmt = env.asada_buenosaires_db.prepare(query);
   const result = params.length > 0 ? await stmt.bind(...params).all() : await stmt.all();
 
   if (!result.results) {
@@ -278,7 +280,7 @@ async function createCard(request: Request, env: Env): Promise<Response> {
 
   try {
     // Insert card
-    const cardResult = await env.asada_suerre_db.prepare(`
+    const cardResult = await env.asada_buenosaires_db.prepare(`
       INSERT INTO cards (title, description, date, image, subtitle, tag, badge, icon, url, google_maps_url, variant, sort_order)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
@@ -301,13 +303,13 @@ async function createCard(request: Request, env: Env): Promise<Response> {
     // Insert authors if provided
     if (body.author && typeof body.author === 'string') {
       // Handle single author string
-      await env.asada_suerre_db.prepare(
+      await env.asada_buenosaires_db.prepare(
         'INSERT INTO card_authors (card_id, name, avatar) VALUES (?, ?, ?)'
       ).bind(cardId, body.author, null).run();
     } else if (body.authors && Array.isArray(body.authors)) {
       // Handle array of author objects
       for (const author of body.authors) {
-        await env.asada_suerre_db.prepare(
+        await env.asada_buenosaires_db.prepare(
           'INSERT INTO card_authors (card_id, name, avatar) VALUES (?, ?, ?)'
         ).bind(cardId, author.name, author.avatar || null).run();
       }
@@ -316,7 +318,7 @@ async function createCard(request: Request, env: Env): Promise<Response> {
     // Insert items if provided
     if (body.items && Array.isArray(body.items)) {
       for (const item of body.items) {
-        await env.asada_suerre_db.prepare(
+        await env.asada_buenosaires_db.prepare(
           'INSERT INTO card_items (card_id, item) VALUES (?, ?)'
         ).bind(cardId, item).run();
       }
@@ -401,17 +403,17 @@ async function updateCard(request: Request, env: Env, id: string): Promise<Respo
     }
 
     params.push(id);
-    await env.asada_suerre_db.prepare(`UPDATE cards SET ${updateFields.join(', ')} WHERE id = ?`)
+    await env.asada_buenosaires_db.prepare(`UPDATE cards SET ${updateFields.join(', ')} WHERE id = ?`)
       .bind(...params)
       .run();
 
     // Replace authors if provided
     if (body.authors !== undefined) {
-      await env.asada_suerre_db.prepare('DELETE FROM card_authors WHERE card_id = ?').bind(id).run();
+      await env.asada_buenosaires_db.prepare('DELETE FROM card_authors WHERE card_id = ?').bind(id).run();
       
       if (Array.isArray(body.authors)) {
         for (const author of body.authors) {
-          await env.asada_suerre_db.prepare(
+          await env.asada_buenosaires_db.prepare(
             'INSERT INTO card_authors (card_id, name, avatar) VALUES (?, ?, ?)'
           ).bind(id, author.name, author.avatar || null).run();
         }
@@ -420,11 +422,11 @@ async function updateCard(request: Request, env: Env, id: string): Promise<Respo
 
     // Replace items if provided
     if (body.items !== undefined) {
-      await env.asada_suerre_db.prepare('DELETE FROM card_items WHERE card_id = ?').bind(id).run();
+      await env.asada_buenosaires_db.prepare('DELETE FROM card_items WHERE card_id = ?').bind(id).run();
       
       if (Array.isArray(body.items)) {
         for (const item of body.items) {
-          await env.asada_suerre_db.prepare(
+          await env.asada_buenosaires_db.prepare(
             'INSERT INTO card_items (card_id, item) VALUES (?, ?)'
           ).bind(id, item).run();
         }
@@ -446,9 +448,9 @@ async function deleteCard(request: Request, env: Env, id: string): Promise<Respo
   }
 
   try {
-    await env.asada_suerre_db.prepare('DELETE FROM card_authors WHERE card_id = ?').bind(id).run();
-    await env.asada_suerre_db.prepare('DELETE FROM card_items WHERE card_id = ?').bind(id).run();
-    await env.asada_suerre_db.prepare('DELETE FROM cards WHERE id = ?').bind(id).run();
+    await env.asada_buenosaires_db.prepare('DELETE FROM card_authors WHERE card_id = ?').bind(id).run();
+    await env.asada_buenosaires_db.prepare('DELETE FROM card_items WHERE card_id = ?').bind(id).run();
+    await env.asada_buenosaires_db.prepare('DELETE FROM cards WHERE id = ?').bind(id).run();
 
     return jsonResponse({ success: true, message: 'Card deleted successfully' });
   } catch (error: any) {
@@ -474,7 +476,7 @@ async function reorderCards(request: Request, env: Env): Promise<Response> {
       if (!item.id || item.sort_order === undefined) {
         continue;
       }
-      await env.asada_suerre_db.prepare('UPDATE cards SET sort_order = ? WHERE id = ?')
+      await env.asada_buenosaires_db.prepare('UPDATE cards SET sort_order = ? WHERE id = ?')
         .bind(item.sort_order, item.id)
         .run();
     }
@@ -489,7 +491,7 @@ async function reorderCards(request: Request, env: Env): Promise<Response> {
 
 // GET /contacts
 async function getContacts(env: Env): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM contacts WHERE id = 1').first();
+  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM contacts WHERE id = 1').first();
 
   return jsonResponse(result || {});
 }
@@ -508,7 +510,7 @@ async function updateContacts(request: Request, env: Env): Promise<Response> {
   }
 
   try {
-    await env.asada_suerre_db.prepare(`
+    await env.asada_buenosaires_db.prepare(`
       INSERT OR REPLACE INTO contacts (id, whatsapp_phone_info, whatsapp_phone_support, facebook_url)
       VALUES (1, ?, ?, ?)
     `).bind(
@@ -523,11 +525,46 @@ async function updateContacts(request: Request, env: Env): Promise<Response> {
   }
 }
 
+// POST /send-complaint
+async function sendComplaintEmail(request: Request, env: Env): Promise<Response> {
+  const body = await parseBody(request);
+
+  if (!body || !body.to || !body.message) {
+    return errorResponse('Faltan campos requeridos: destinatario, mensaje', 400);
+  }
+
+  try {
+    const resend = new Resend(env.RESEND_API_KEY);
+    console.log(env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: body.to,
+      subject: 'Queja de usuario',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #52bc52;">Queja de Usuario</h2>
+          <p>Se ha recibido una nueva queja:</p>
+          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0; white-space: pre-wrap;">${body.message}</p>
+          </div>
+          <p style="color: #666; font-size: 14px;">Este mensaje fue enviado desde el formulario de quejas de Asada Buenos Aires.</p>
+        </div>
+      `,
+    });
+
+    return jsonResponse({ success: true, message: 'Queja enviada exitosamente' });
+  } catch (error: any) {
+    console.error('Error al enviar email:', error);
+    return errorResponse('Error al enviar la queja', 500);
+  }
+}
+
 // ==================== HOME SLIDES ENDPOINTS ====================
 
 // GET /home-slides
 async function getHomeSlides(env: Env): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM home_slides ORDER BY sort_order').all();
+  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM home_slides ORDER BY sort_order').all();
 
   return jsonResponse(result.results || []);
 }
@@ -546,7 +583,7 @@ async function createHomeSlide(request: Request, env: Env): Promise<Response> {
   }
 
   try {
-    const result = await env.asada_suerre_db.prepare(`
+    const result = await env.asada_buenosaires_db.prepare(`
       INSERT INTO home_slides (image, title, subtitle, description, sort_order)
       VALUES (?, ?, ?, ?, ?)
     `).bind(
@@ -558,7 +595,7 @@ async function createHomeSlide(request: Request, env: Env): Promise<Response> {
     ).run();
 
     const id = result.meta.last_row_id;
-    const slide = await env.asada_suerre_db.prepare('SELECT * FROM home_slides WHERE id = ?').bind(id).first();
+    const slide = await env.asada_buenosaires_db.prepare('SELECT * FROM home_slides WHERE id = ?').bind(id).first();
 
     return jsonResponse(slide, 201);
   } catch (error: any) {
@@ -609,11 +646,11 @@ async function updateHomeSlide(request: Request, env: Env, id: string): Promise<
     }
 
     params.push(id);
-    await env.asada_suerre_db.prepare(`UPDATE home_slides SET ${updateFields.join(', ')} WHERE id = ?`)
+    await env.asada_buenosaires_db.prepare(`UPDATE home_slides SET ${updateFields.join(', ')} WHERE id = ?`)
       .bind(...params)
       .run();
 
-    const slide = await env.asada_suerre_db.prepare('SELECT * FROM home_slides WHERE id = ?').bind(id).first();
+    const slide = await env.asada_buenosaires_db.prepare('SELECT * FROM home_slides WHERE id = ?').bind(id).first();
 
     return jsonResponse(slide);
   } catch (error: any) {
@@ -629,7 +666,7 @@ async function deleteHomeSlide(request: Request, env: Env, id: string): Promise<
   }
 
   try {
-    const result = await env.asada_suerre_db.prepare('DELETE FROM home_slides WHERE id = ?').bind(id).run();
+    const result = await env.asada_buenosaires_db.prepare('DELETE FROM home_slides WHERE id = ?').bind(id).run();
 
     if (result.meta.changes === 0) {
       return errorResponse('Diapositiva de inicio no encontrada', 404);
@@ -645,7 +682,7 @@ async function deleteHomeSlide(request: Request, env: Env, id: string): Promise<
 
 // GET /timeline
 async function getTimeline(env: Env): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM timeline_items ORDER BY year ASC').all();
+  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM timeline_items ORDER BY year ASC').all();
 
   return jsonResponse(result.results || []);
 }
@@ -664,7 +701,7 @@ async function createTimelineItem(request: Request, env: Env): Promise<Response>
   }
 
   try {
-    const result = await env.asada_suerre_db.prepare(`
+    const result = await env.asada_buenosaires_db.prepare(`
       INSERT INTO timeline_items (year, title, description, icon, image, sort_order)
       VALUES (?, ?, ?, ?, ?, ?)
     `).bind(
@@ -677,7 +714,7 @@ async function createTimelineItem(request: Request, env: Env): Promise<Response>
     ).run();
 
     const id = result.meta.last_row_id;
-    const item = await env.asada_suerre_db.prepare('SELECT * FROM timeline_items WHERE id = ?').bind(id).first();
+    const item = await env.asada_buenosaires_db.prepare('SELECT * FROM timeline_items WHERE id = ?').bind(id).first();
 
     return jsonResponse(item, 201);
   } catch (error: any) {
@@ -732,11 +769,11 @@ async function updateTimelineItem(request: Request, env: Env, id: string): Promi
     }
 
     params.push(id);
-    await env.asada_suerre_db.prepare(`UPDATE timeline_items SET ${updateFields.join(', ')} WHERE id = ?`)
+    await env.asada_buenosaires_db.prepare(`UPDATE timeline_items SET ${updateFields.join(', ')} WHERE id = ?`)
       .bind(...params)
       .run();
 
-    const item = await env.asada_suerre_db.prepare('SELECT * FROM timeline_items WHERE id = ?').bind(id).first();
+    const item = await env.asada_buenosaires_db.prepare('SELECT * FROM timeline_items WHERE id = ?').bind(id).first();
 
     return jsonResponse(item);
   } catch (error: any) {
@@ -752,7 +789,7 @@ async function deleteTimelineItem(request: Request, env: Env, id: string): Promi
   }
 
   try {
-    const result = await env.asada_suerre_db.prepare('DELETE FROM timeline_items WHERE id = ?').bind(id).run();
+    const result = await env.asada_buenosaires_db.prepare('DELETE FROM timeline_items WHERE id = ?').bind(id).run();
 
     if (result.meta.changes === 0) {
       return errorResponse('Elemento de línea de tiempo no encontrado', 404);
@@ -767,8 +804,21 @@ async function deleteTimelineItem(request: Request, env: Env, id: string): Promi
 // ==================== STATS ENDPOINTS ====================
 
 // GET /stats
-async function getStats(env: Env): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM stats ORDER BY sort_order').all();
+async function getStats(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const sortOrder = url.searchParams.get('sort_order');
+
+  let query = 'SELECT * FROM stats';
+  let params: any[] = [];
+
+  if (sortOrder !== null) {
+    query += ' WHERE sort_order = ?';
+    params.push(sortOrder);
+  } else {
+    query += ' ORDER BY sort_order';
+  }
+
+  const result = await env.asada_buenosaires_db.prepare(query).bind(...params).all();
 
   return jsonResponse(result.results || []);
 }
@@ -788,19 +838,97 @@ async function updateStats(request: Request, env: Env): Promise<Response> {
 
   try {
     // Delete all existing stats
-    await env.asada_suerre_db.prepare('DELETE FROM stats').run();
+    await env.asada_buenosaires_db.prepare('DELETE FROM stats WHERE sort_order = 0').run();
 
     // Insert new stats
     for (const stat of body) {
       if (!stat.number || !stat.label) {
         continue;
       }
-      await env.asada_suerre_db.prepare(
+      await env.asada_buenosaires_db.prepare(
         'INSERT INTO stats (number, label, sort_order) VALUES (?, ?, ?)'
       ).bind(stat.number, stat.label, stat.sort_order || 0).run();
     }
 
-    return getStats(env);
+    return getStats(request, env);
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
+// POST /stats (create new stat)
+async function createStat(request: Request, env: Env): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  const body = await parseBody(request);
+
+  if (!body) {
+    return errorResponse('El cuerpo de la solicitud es requerido');
+  }
+
+  try {
+    const { number, label, sort_order } = body;
+
+    if (!number || !label) {
+      return errorResponse('Los campos number y label son requeridos');
+    }
+
+    const result = await env.asada_buenosaires_db.prepare(
+      'INSERT INTO stats (number, label, sort_order) VALUES (?, ?, ?)'
+    ).bind(number, label, sort_order || 0).run();
+
+    return jsonResponse({ success: true, message: 'Estadística creada exitosamente', id: result.meta.last_row_id });
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
+// DELETE /stats/:id (delete individual stat)
+async function deleteStat(request: Request, env: Env, id: string): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  try {
+    await env.asada_buenosaires_db.prepare(
+      'DELETE FROM stats WHERE id = ?'
+    ).bind(id).run();
+
+    return jsonResponse({ success: true, message: 'Estadística eliminada exitosamente' });
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
+// PUT /stats/:id (update individual stat)
+async function updateStat(request: Request, env: Env, id: string): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  const body = await parseBody(request);
+
+  if (!body) {
+    return errorResponse('El cuerpo de la solicitud es requerido');
+  }
+
+  try {
+    const { number, label, sort_order } = body;
+
+    if (!number || !label) {
+      return errorResponse('Los campos number y label son requeridos');
+    }
+
+    await env.asada_buenosaires_db.prepare(
+      'UPDATE stats SET number = ?, label = ?, sort_order = ? WHERE id = ?'
+    ).bind(number, label, sort_order || 0, id).run();
+
+    return jsonResponse({ success: true, message: 'Estadística actualizada exitosamente' });
   } catch (error: any) {
     return errorResponse(error.message, 500);
   }
@@ -810,14 +938,14 @@ async function updateStats(request: Request, env: Env): Promise<Response> {
 
 // GET /about
 async function getAboutContent(env: Env): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM about_content').all();
+  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM about_content').all();
 
   return jsonResponse(result.results || []);
 }
 
 // GET /about/:type
 async function getAboutContentByType(env: Env, type: string): Promise<Response> {
-  const result = await env.asada_suerre_db.prepare('SELECT * FROM about_content WHERE content_type = ?')
+  const result = await env.asada_buenosaires_db.prepare('SELECT * FROM about_content WHERE content_type = ?')
     .bind(type)
     .first();
 
@@ -842,7 +970,7 @@ async function upsertAboutContent(request: Request, env: Env, type: string): Pro
   }
 
   try {
-    await env.asada_suerre_db.prepare(`
+    await env.asada_buenosaires_db.prepare(`
       INSERT INTO about_content (content_type, title, content)
       VALUES (?, ?, ?)
       ON CONFLICT(content_type) DO UPDATE SET
@@ -869,7 +997,7 @@ export default {
       return new Response(null, {
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
       });
@@ -912,6 +1040,9 @@ export default {
     if (path === '/contacts' && method === 'PUT') {
       return updateContacts(request, env);
     }
+    if (path === '/send-complaint' && method === 'POST') {
+      return sendComplaintEmail(request, env);
+    }
 
     // ==================== HOME SLIDES ROUTES ====================
     if (path === '/home-slides' && method === 'GET') {
@@ -947,10 +1078,21 @@ export default {
 
     // ==================== STATS ROUTES ====================
     if (path === '/stats' && method === 'GET') {
-      return getStats(env);
+      return getStats(request, env);
+    }
+    if (path === '/stats' && method === 'POST') {
+      return createStat(request, env);
     }
     if (path === '/stats' && method === 'PUT') {
       return updateStats(request, env);
+    }
+    if (path.startsWith('/stats/') && method === 'PUT') {
+      const id = path.split('/')[2];
+      return updateStat(request, env, id);
+    }
+    if (path.startsWith('/stats/') && method === 'DELETE') {
+      const id = path.split('/')[2];
+      return deleteStat(request, env, id);
     }
 
     // ==================== ABOUT CONTENT ROUTES ====================
@@ -1024,7 +1166,7 @@ async function uploadFile(request: Request, env: Env): Promise<Response> {
     const contentType = getContentType(filename);
 
     // Store file in R2
-    await env.asada_suerre_images.put(filename, imageFile.stream(), {
+    await env.asada_buenosaires_images.put(filename, imageFile.stream(), {
       httpMetadata: {
         contentType,
         cacheControl: 'public, max-age=31536000', // Cache for 1 year
@@ -1046,7 +1188,7 @@ async function deleteFile(request: Request, env: Env, key: string): Promise<Resp
   }
 
   try {
-    await env.asada_suerre_images.delete(key);
+    await env.asada_buenosaires_images.delete(key);
     return jsonResponse({ success: true });
   } catch (error) {
     console.error('Error al eliminar:', error);
@@ -1057,7 +1199,7 @@ async function deleteFile(request: Request, env: Env, key: string): Promise<Resp
 // Serve image endpoint (for local development)
 async function serveImage(request: Request, env: Env, key: string): Promise<Response> {
   try {
-    const object = await env.asada_suerre_images.get(key);
+    const object = await env.asada_buenosaires_images.get(key);
 
     if (!object) {
       return errorResponse('Imagen no encontrada', 404);

@@ -1,6 +1,6 @@
-# ASADA Suerre API - Cloudflare Worker + D1
+# ASADA Buenos Aires API - Cloudflare Worker + D1
 
-A REST API built with Cloudflare Workers and D1 database for the ASADA Suerre website.
+A REST API built with Cloudflare Workers and D1 database for the ASADA Buenos Aires website.
 
 ## Project Structure
 
@@ -29,7 +29,7 @@ npm install
 
 ```bash
 # Create the database
-wrangler d1 create asada-suerre-db
+wrangler d1 create asada-buenosaires-db
 ```
 
 Copy the `database_id` from the output and update `wrangler.toml`:
@@ -37,7 +37,7 @@ Copy the `database_id` from the output and update `wrangler.toml`:
 ```toml
 [[d1_databases]]
 binding = "DB"
-database_name = "asada-suerre-db"
+database_name = "asada-buenosaires-db"
 database_id = "your-actual-database-id-here"
 ```
 
@@ -45,7 +45,7 @@ database_id = "your-actual-database-id-here"
 
 ```bash
 # Apply schema to local database
-wrangler d1 execute asada_suerre_db --local --file=../db/schema.sql
+wrangler d1 execute asada_buenosaires_db --local --file=../db/schema.sql
 ```
 
 ### 4. Run Local Development Server

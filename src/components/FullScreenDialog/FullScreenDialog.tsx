@@ -18,6 +18,7 @@ import CompressIcon from '@mui/icons-material/Compress';
 import { TransitionProps } from '@mui/material/transitions';
 import { iconMap } from '../GenericCard/GenericCard';
 import { getImageUrl } from '../../services/dataService';
+import Wave from 'react-wavify';
 
 export interface FullScreenDialogProps {
   open: boolean;
@@ -159,15 +160,66 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#04A6DB',
+              backgroundColor: '#52bc52',
               color: 'primary.contrastText',
               border: "1px solid black",
               borderRadius: 2,
               position: 'relative',
               flexShrink: 0,
+              overflow: 'hidden',
             }}
           >
-            <Box sx={{ fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Wave
+              paused={true}
+              fill="url(#gradient-behind)"
+              options={{
+                amplitude: 40,
+                speed: 6,
+                points: 7,
+              }}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                zIndex: 0,
+                pointerEvents: "none",
+                height: "100%",
+              }}
+            >
+              <defs>
+                <linearGradient id="gradient-behind" gradientTransform="rotate(90)">
+                  <stop offset="5%" stopColor="#52bc52" />
+                  <stop offset="95%" stopColor="#042f04" />
+                </linearGradient>
+              </defs>
+            </Wave>
+            <Wave
+              paused={true}
+              fill="url(#gradient)"
+              options={{
+                amplitude: 40,
+                speed: 1,
+                points: 3,
+              }}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                zIndex: 0,
+                pointerEvents: "none",
+                height: "100%",
+              }}
+            >
+              <defs>
+                <linearGradient id="gradient" gradientTransform="rotate(90)">
+                  <stop offset="10%" stopColor="#52bc52" />
+                  <stop offset="90%" stopColor="#042f04" />
+                </linearGradient>
+              </defs>
+            </Wave>
+            <Box sx={{ fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1, position: 'relative', zIndex: 1 }}>
               {title}
               {icon && (!isXs || title.length <= 30) && (
                 <Box sx={{ fontSize: '1.5rem' }}>
@@ -179,7 +231,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
               edge="end"
               onClick={onClose}
               aria-label="close"
-              sx={{ color: 'primary.contrastText', position: 'absolute', right: 8 }}
+              sx={{ color: 'primary.contrastText', position: 'absolute', right: 8, zIndex: 1 }}
             >
               <CloseIcon />
             </IconButton>

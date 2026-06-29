@@ -1,4 +1,4 @@
-# Production Deployment Guide for ASADA Suerre Web
+# Production Deployment Guide for ASADA Buenos Aires Web
 
 This guide covers deploying the full stack (React frontend + Cloudflare Worker API + D1 + R2) to Cloudflare.
 
@@ -33,19 +33,19 @@ wrangler login
 Replace the placeholder values in `worker/wrangler.toml`:
 - `PRODUCTION_DATABASE_ID` - after creating production D1 database
 - `STAGING_DATABASE_ID` - after creating staging D1 database
-- `acueductosuerre.com` - replace with your actual domain
+- `asadabuenosaires.com` - replace with your actual domain
 - Update routes patterns with your actual domain
 
 ### 2. Create production D1 databases
 
 ```bash
 # Create production database
-wrangler d1 create asada-suerre-db-prod
+wrangler d1 create asada-buenosaires-db-prod
 
 # Note the database_id and update wrangler.toml
 
 # Create staging database
-wrangler d1 create asada-suerre-db-staging
+wrangler d1 create asada-buenosaires-db-staging
 
 # Note the database_id and update wrangler.toml
 ```
@@ -54,10 +54,10 @@ wrangler d1 create asada-suerre-db-staging
 
 ```bash
 # Create production bucket
-wrangler r2 bucket create asada-suerre-images-prod
+wrangler r2 bucket create asada-buenosaires-images-prod
 
 # Create staging bucket
-wrangler r2 bucket create asada-suerre-images-staging
+wrangler r2 bucket create asada-buenosaires-images-staging
 ```
 
 ## D1 Database Setup
@@ -75,7 +75,7 @@ wrangler d1 execute DB_ID --remote --file=schema.sql --env staging
 
 Replace `DB_ID` with the actual database ID from wrangler.toml or use the database name:
 ```bash
-wrangler d1 execute asada-suerre-db-prod --remote --file=schema.sql
+wrangler d1 execute asada-buenosaires-db-prod --remote --file=schema.sql
 ```
 
 ### Seed Admin User
@@ -109,34 +109,34 @@ wrangler d1 execute DB_ID --remote --file=migrations/001_add_new_field.sql --env
 
 ### Configure Public Access
 
-1. Go to Cloudflare Dashboard > R2 > asada-suerre-images-prod
+1. Go to Cloudflare Dashboard > R2 > asada-buenosaires-images-prod
 2. Settings > Public Access
 3. Enable "Allow public read access"
-4. Configure custom domain (e.g., cdn.acueductosuerre.com)
+4. Configure custom domain (e.g., cdn.asadabuenosaires.com)
 
 ### Upload Initial Images
 
 ```bash
 # Upload images to production bucket
-wrangler r2 object put asada-suerre-images-prod/news/image1.jpg --file=path/to/image1.jpg
+wrangler r2 object put asada-buenosaires-images-prod/news/image1.jpg --file=path/to/image1.jpg
 
 # Upload entire directory
-wrangler r2 object put asada-suerre-images-prod/path/to/image.jpg --file=local/path/to/image.jpg
+wrangler r2 object put asada-buenosaires-images-prod/path/to/image.jpg --file=local/path/to/image.jpg
 ```
 
 ### Image Key Storage in D1
 
 Store only the relative path in D1 (not full URLs):
 - Good: `news/2024-01-15-image1.jpg`
-- Bad: `https://cdn.acueductosuerre.com/news/2024-01-15-image1.jpg`
+- Bad: `https://cdn.asadabuenosaires.com/news/2024-01-15-image1.jpg`
 
 The `IMAGE_BASE_URL` environment variable will be prepended at runtime.
 
 ### Bucket Naming Convention
 
-- Production: `asada-suerre-images-prod`
-- Staging: `asada-suerre-images-staging`
-- Local: `asada-suerre-images`
+- Production: `asada-buenosaires-images-prod`
+- Staging: `asada-buenosaires-images-staging`
+- Local: `asada-buenosaires-images`
 
 ## Worker Deployment
 
@@ -185,7 +185,7 @@ wrangler dev
 wrangler tail --env production
 
 # Test API endpoint
-curl https://api.acueductosuerre.com/api/cards
+curl https://api.asadabuenosaires.com/api/cards
 ```
 
 ## React Frontend Deployment
@@ -205,15 +205,15 @@ curl https://api.acueductosuerre.com/api/cards
 
 In Cloudflare Pages project settings:
 ```
-REACT_APP_API_URL=https://api.acueductosuerre.com
-REACT_APP_IMAGE_BASE_URL=https://cdn.acueductosuerre.com
+REACT_APP_API_URL=https://api.asadabuenosaires.com
+REACT_APP_IMAGE_BASE_URL=https://cdn.asadabuenosaires.com
 REACT_APP_ENVIRONMENT=production
 ```
 
 #### Configure Custom Domain
 
 1. Pages project > Custom domains
-2. Add domain: `www.acueductosuerre.com`
+2. Add domain: `www.asadabuenosaires.com`
 3. Configure DNS records as shown by Cloudflare
 
 #### Configure Staging Environment
@@ -221,7 +221,7 @@ REACT_APP_ENVIRONMENT=production
 Create a separate Pages project for staging with:
 - Build command: `npm run build:staging`
 - Environment variables pointing to staging endpoints
-- Domain: `staging.acueductosuerre.com`
+- Domain: `staging.asadabuenosaires.com`
 
 ### Option 2: Manual Deploy
 
@@ -233,7 +233,7 @@ npm run build:production
 npm install -g wrangler
 
 # Deploy to Pages
-wrangler pages deploy build --project-name=asada-suerre-web
+wrangler pages deploy build --project-name=asada-buenosaires-web
 ```
 
 ## Environment Variables and Secrets
@@ -278,10 +278,10 @@ openssl rand -hex 32
 ### Recommended Domain Structure
 
 ```
-Frontend (Pages):  https://www.acueductosuerre.com
-API (Worker):      https://api.acueductosuerre.com
-CDN (R2):          https://cdn.acueductosuerre.com
-Staging:           https://staging.acueductosuerre.com
+Frontend (Pages):  https://www.asadabuenosaires.com
+API (Worker):      https://api.asadabuenosaires.com
+CDN (R2):          https://cdn.asadabuenosaires.com
+Staging:           https://staging.asadabuenosaires.com
 ```
 
 ### DNS Configuration
@@ -290,10 +290,10 @@ In Cloudflare DNS:
 
 | Type | Name | Content | Proxy |
 |------|------|---------|-------|
-| CNAME | www | asada-suerre-web.pages.dev | Proxied (orange) |
-| CNAME | api | asada-suerre-api-prod.YOUR_ACCOUNT.workers.dev | Proxied (orange) |
-| CNAME | cdn | asada-suerre-images-prod.r2.dev | Proxied (orange) |
-| CNAME | staging | asada-suerre-web-staging.pages.dev | Proxied (orange) |
+| CNAME | www | asada-buenosaires-web.pages.dev | Proxied (orange) |
+| CNAME | api | asada-buenosaires-api-prod.YOUR_ACCOUNT.workers.dev | Proxied (orange) |
+| CNAME | cdn | asada-buenosaires-images-prod.r2.dev | Proxied (orange) |
+| CNAME | staging | asada-buenosaires-web-staging.pages.dev | Proxied (orange) |
 
 ### Worker Routes Configuration
 
@@ -301,7 +301,7 @@ The routes are already configured in `wrangler.toml`:
 ```toml
 [env.production]
 routes = [
-  { pattern = "api.acueductosuerre.com/*", zone_name = "acueductosuerre.com" }
+  { pattern = "api.asadabuenosaires.com/*", zone_name = "asadabuenosaires.com" }
 ]
 ```
 
@@ -317,17 +317,17 @@ Cloudflare automatically provides SSL for all proxied domains. Ensure:
 
 ```bash
 # Test API
-curl https://api.acueductosuerre.com/api/cards
-curl https://api.acueductosuerre.com/api/contacts
+curl https://api.asadabuenosaires.com/api/cards
+curl https://api.asadabuenosaires.com/api/contacts
 
 # Test frontend
-curl https://www.acueductosuerre.com
+curl https://www.asadabuenosaires.com
 
 # Test CDN
-curl https://cdn.acueductosuerre.com/path/to/image.jpg
+curl https://cdn.asadabuenosaires.com/path/to/image.jpg
 
 # Test authentication
-curl -X POST https://api.acueductosuerre.com/api/auth/login \
+curl -X POST https://api.asadabuenosaires.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"your-password"}'
 ```
@@ -340,7 +340,7 @@ cd worker
 wrangler tail --env production
 
 # View recent logs in Cloudflare Dashboard
-# Workers & Pages > asada-suerre-api-prod > Logs
+# Workers & Pages > asada-buenosaires-api-prod > Logs
 ```
 
 ### Health Checks
@@ -353,7 +353,7 @@ if (url.pathname === '/health') {
 }
 ```
 
-Test: `curl https://api.acueductosuerre.com/health`
+Test: `curl https://api.asadabuenosaires.com/health`
 
 ## Rollback Procedure
 

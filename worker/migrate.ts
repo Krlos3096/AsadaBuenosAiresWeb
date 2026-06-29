@@ -9,8 +9,8 @@ const __dirname = path.dirname(__filename);
 // Configuration
 const DATA_DIR = path.join(__dirname, 'data');
 const API_URL = 'http://localhost:8787';
-const ADMIN_USERNAME = 'user';
-const ADMIN_PASSWORD = 'pass';
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'devpass';
 
 let authToken: string | null = null;
 

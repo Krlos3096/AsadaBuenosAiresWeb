@@ -13,6 +13,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../context/TranslationContext';
+import { brand } from '../../shared-theme/themePrimitives';
 
 interface LoginDialogProps {
   onSuccess?: () => void;
@@ -69,6 +70,25 @@ const LoginDialogContent: React.FC<LoginDialogProps> = ({ onSuccess }) => {
           disabled={isLoading}
           autoFocus
           autoComplete="username"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: brand[300],
+              },
+              '&:hover fieldset': {
+                borderColor: brand[500],
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: brand[700],
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: brand[500],
+              '&.Mui-focused': {
+                color: brand[600],
+              },
+            },
+          }}
         />
 
         <TextField
@@ -102,6 +122,23 @@ const LoginDialogContent: React.FC<LoginDialogProps> = ({ onSuccess }) => {
             '& input::-webkit-credentials-auto-fill-button': {
               display: 'none',
             },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: brand[300],
+              },
+              '&:hover fieldset': {
+                borderColor: brand[500],
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: brand[700],
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: brand[500],
+              '&.Mui-focused': {
+                color: brand[600],
+              },
+            },
           }}
         />
 
@@ -111,7 +148,17 @@ const LoginDialogContent: React.FC<LoginDialogProps> = ({ onSuccess }) => {
           fullWidth
           size="large"
           disabled={isLoading || !username || !password}
-          sx={{ mt: 2 }}
+          sx={{
+            mt: 2,
+            backgroundColor: brand[500],
+            color: brand[50],
+            '&:hover': {
+              backgroundColor: brand[700],
+            },
+            '&:disabled': {
+              backgroundColor: brand[300],
+            },
+          }}
         >
           {isLoading ? <CircularProgress size={24} /> : t.auth.login}
         </Button>

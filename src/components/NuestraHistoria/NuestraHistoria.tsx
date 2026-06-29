@@ -91,7 +91,7 @@ function StatCard({ number, label, onEdit }: { number: string | number; label: s
     <Card className="stat-card" sx={{ textAlign: "center", py: 3, position: 'relative' }}>
       {isAuthenticated && onEdit && (
         <IconButton
-          sx={{ position: 'absolute', top: 8, right: 8 }}
+          sx={{ position: 'absolute', top: 8, left: 8 }}
           onClick={onEdit}
           color="primary"
         >
@@ -133,7 +133,7 @@ export default function NuestraHistoria() {
       try {
         const [timeline, stats, missionData, visionData] = await Promise.all([
           DataService.getTimeItemsData(),
-          DataService.getStatsData(),
+          DataService.getStatsData(0),
           DataService.getMission(),
           DataService.getVision()
         ]);
@@ -226,7 +226,7 @@ export default function NuestraHistoria() {
               const updatedStats = [...statsData];
               updatedStats[index] = data;
               await DataService.updateStats(updatedStats);
-              const newStats = await DataService.getStatsData();
+              const newStats = await DataService.getStatsData(0);
               setStatsData(newStats || []);
               closeDialog();
             } catch (error) {
@@ -484,7 +484,7 @@ export default function NuestraHistoria() {
           </Card>
           {isAuthenticated && (
             <IconButton
-              sx={{ position: 'absolute', top: 8, right: 8 }}
+              sx={{ position: 'absolute', top: 8, left: 8 }}
               onClick={handleEditMission}
               color="primary"
             >
@@ -509,7 +509,7 @@ export default function NuestraHistoria() {
           </Card>
           {isAuthenticated && (
             <IconButton
-              sx={{ position: 'absolute', top: 8, right: 8 }}
+              sx={{ position: 'absolute', top: 8, left: 8 }}
               onClick={handleEditVision}
               color="primary"
             >

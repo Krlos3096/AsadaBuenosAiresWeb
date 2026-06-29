@@ -43,10 +43,10 @@ Apply the updated schema to your D1 database:
 
 ```bash
 # Local development
-npx wrangler d1 execute asada-suerre-db --local --file=./db/schema.sql
+npx wrangler d1 execute asada-buenosaires-db --local --file=./db/schema.sql
 
 # Production
-npx wrangler d1 execute asada-suerre-db --file=./db/schema.sql
+npx wrangler d1 execute asada-buenosaires-db --file=./db/schema.sql
 ```
 
 ### Step 2: Generate Secure JWT Secret

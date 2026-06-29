@@ -2,4 +2,4 @@
 /* /index.html 200
 
 # API proxy to Cloudflare Worker (optional - if you want to proxy API requests through Pages)
-# /api/* https://api.acueductosuerre.com/:splat 200
+# /api/* https://api.asadabuenosaires.com/:splat 200

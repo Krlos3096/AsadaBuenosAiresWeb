@@ -1,7 +1,7 @@
 {
-  "name": "asada-suerre-worker",
+  "name": "asada-buenosaires-worker",
   "version": "1.0.0",
-  "description": "Cloudflare Worker API for ASADA Suerre",
+  "description": "Cloudflare Worker API for ASADA Buenos Aires",
   "main": "index.ts",
   "type": "module",
   "scripts": {
@@ -9,6 +9,9 @@
     "deploy": "wrangler deploy",
     "tail": "wrangler tail",
     "migrate": "tsx migrate.ts"
+  },
+  "dependencies": {
+    "resend": "^3.2.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",

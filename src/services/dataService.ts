@@ -54,6 +54,10 @@ async function apiFetch<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  if (requireAuth && !token) {
+    throw new Error('Authentication required');
+  }
+
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       headers,
@@ -256,13 +260,34 @@ export const DataService = {
     };
   },
   
-  getStatsData: async (): Promise<Stat[] | undefined> => {
+  getStatsData: async (sortOrder?: number): Promise<Stat[] | undefined> => {
     try {
-      return await apiFetch<Stat[]>('/stats', {}, false);
+      const url = sortOrder !== undefined ? `/stats?sort_order=${sortOrder}` : '/stats';
+      return await apiFetch<Stat[]>(url, {}, false);
     } catch (error) {
       console.error('Failed to fetch stats:', error);
       return undefined;
     }
+  },
+
+  updateStat: async (id: string, number: string, label: string, sort_order?: number): Promise<void> => {
+    return apiFetch(`/stats/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ number, label, sort_order }),
+    }, true);
+  },
+
+  createStat: async (number: string, label: string, sort_order?: number): Promise<void> => {
+    return apiFetch('/stats', {
+      method: 'POST',
+      body: JSON.stringify({ number, label, sort_order }),
+    }, true);
+  },
+
+  deleteStat: async (id: string): Promise<void> => {
+    return apiFetch(`/stats/${id}`, {
+      method: 'DELETE',
+    }, true);
   },
   
   getMission: async () => {
@@ -470,5 +495,20 @@ export const DataService = {
         'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
       },
     });
+  },
+
+  sendComplaint: async (to: string, message: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/send-complaint`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ to, message }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al enviar queja');
+    }
   },
 };

@@ -6,7 +6,7 @@
   z-index: 1000;
 
   .contact-button {
-    background-color: #04A6DB;
+    background-color: #52bc52;
     color: white;
     width: 80px;
     height: 80px;
@@ -19,7 +19,7 @@
 
     &:hover {
       border: 2px solid black;
-      background-color: #0384ad;
+      background-color: #3da33d;
       transform: scale(1.1) rotate(-15deg);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
     }

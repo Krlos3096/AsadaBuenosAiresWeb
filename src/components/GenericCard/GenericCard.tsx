@@ -202,7 +202,7 @@ const StyledCard = styled(Card)<{ cardvariant?: string }>(({ theme, cardvariant 
   flexDirection: 'column',
   padding: 0,
   height: '100%',
-  backgroundColor: (theme.vars || theme).palette.background.paper,
+  backgroundColor: (theme.vars || theme).palette.background.default,
   transition: cardvariant === 'service' || cardvariant === 'governance' 
     ? 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out'
     : 'none',
@@ -640,7 +640,7 @@ const GenericCard: React.FC<GenericCardProps> = ({
         sx={{
           position: 'absolute',
           top: 8,
-          right: 8,
+          left: 50,
           display: 'flex',
           gap: 1,
           backgroundColor: 'rgba(255, 255, 255, 0.9)',

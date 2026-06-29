@@ -1,4 +1,4 @@
--- Schema for ASADA Suerre website content
+-- Schema for ASADA Buenos Aires website content
 -- Compatible with SQLite and Cloudflare D1
 -- Image paths kept as-is for future R2 migration
 

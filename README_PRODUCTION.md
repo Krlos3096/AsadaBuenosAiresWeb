@@ -1,6 +1,6 @@
-# ASADA Suerre Web - Production Deployment Guide
+# ASADA Buenos Aires Web - Production Deployment Guide
 
-This repository contains the production deployment configuration for the ASADA Suerre web application.
+This repository contains the production deployment configuration for the ASADA Buenos Aires web application.
 
 ## Quick Links
 
@@ -42,16 +42,16 @@ This repository contains the production deployment configuration for the ASADA S
 - Images: Local R2 (via Wrangler)
 
 ### Staging
-- Frontend: `https://staging.acueductosuerre.com`
-- Worker: `https://api-staging.acueductosuerre.com`
-- Database: `asada-suerre-db-staging`
-- Images: `asada-suerre-images-staging`
+- Frontend: `https://staging.asadabuenosaires.com`
+- Worker: `https://api-staging.asadabuenosaires.com`
+- Database: `asada-buenosaires-db-staging`
+- Images: `asada-buenosaires-images-staging`
 
 ### Production
-- Frontend: `https://www.acueductosuerre.com`
-- Worker: `https://api.acueductosuerre.com`
-- Database: `asada-suerre-db-prod`
-- Images: `asada-suerre-images-prod`
+- Frontend: `https://www.asadabuenosaires.com`
+- Worker: `https://api.asadabuenosaires.com`
+- Database: `asada-buenosaires-db-prod`
+- Images: `asada-buenosaires-images-prod`
 
 ## Key Configuration Files
 
@@ -151,10 +151,10 @@ wrangler tail --env production
 ### Health Check
 ```bash
 # Test API health
-curl https://api.acueductosuerre.com/health
+curl https://api.asadabuenosaires.com/health
 
 # Test frontend
-curl https://www.acueductosuerre.com
+curl https://www.asadabuenosaires.com
 ```
 
 ## Troubleshooting
@@ -243,4 +243,4 @@ See [Production Best Practices](./PRODUCTION_BEST_PRACTICES.md) for detailed per
 
 ## License
 
-Copyright © 2024 ASADA Suerre
+Copyright © 2024 ASADA Buenos Aires

@@ -76,6 +76,6 @@ async function main() {
 main().catch(console.error);
 
 // Manual SQL command for wrangler:
-// npx wrangler d1 execute asada-suerre-db --local --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
+// npx wrangler d1 execute asada-buenosaires-db --local --command="INSERT INTO admins (username, password_hash) VALUES ('admin', 'YOUR_HASH_HERE')"
 
 export { generatePasswordHash };

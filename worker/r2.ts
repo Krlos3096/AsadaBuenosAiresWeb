@@ -1,7 +1,7 @@
 import { R2Bucket } from '@cloudflare/workers-types';
 
 export interface Env {
-  asada_suerre_images: R2Bucket;
+  asada_buenosaires_images: R2Bucket;
   IMAGE_BASE_URL: string;
 }
 

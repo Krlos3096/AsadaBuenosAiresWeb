@@ -22,26 +22,26 @@
 .contact-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
-  color: #04A6DB;
+  color: #52bc52;
 }
 
 .contact-button {
-  background: linear-gradient(45deg, #04A6DB, #0387be);
+  background: linear-gradient(180deg, #52bc52, #042f04);
   border-radius: 8px;
   font-weight: 600;
   margin-top: auto;
-  
+
   &:hover {
-    background: linear-gradient(45deg, #0387be, #0268a3);
+    background: linear-gradient(45deg, #3da33d, #042f04);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(4, 166, 219, 0.3);
+    box-shadow: 0 4px 12px rgba(82, 188, 82, 0.3);
   }
 }
 
 .map-section {
   .MuiPaper-root {
     border-radius: 12px;
-    border: 1px solid rgba(4, 166, 219, 0.2);
+    border: 1px solid rgba(82, 188, 82, 0.2);
     overflow: hidden;
   }
 }

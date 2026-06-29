@@ -36,6 +36,7 @@ export const es = {
     services: 'Gestiones',
     contacts: 'Contactos',
     about: 'Nuestra Historia',
+    data: 'Calidad de Agua',
   },
 
   // Cards
@@ -164,8 +165,8 @@ export const es = {
 
   // Orientation
   orientation: {
-    rotateToPortrait: 'Por favor, gira tu dispositivo a modo vertical',
-    rotateToPortraitBestExperience: 'Por favor, gira tu dispositivo a modo vertical para la mejor experiencia',
+    rotateToPortrait: 'Por favor, gira tu dispositivo a modo vertical o maximiza la ventana',
+    rotateToPortraitBestExperience: 'Por favor, gira tu dispositivo a modo vertical o maximiza la ventana para la mejor experiencia',
   },
 
   // PWA Installation

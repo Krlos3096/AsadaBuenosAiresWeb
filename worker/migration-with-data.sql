@@ -1,4 +1,4 @@
--- Comprehensive Migration Script for ASADA Suerre Website
+-- Comprehensive Migration Script for ASADA Buenos Aires Website
 -- Includes schema and initial data
 -- Compatible with SQLite and Cloudflare D1
 
@@ -17,14 +17,14 @@ INSERT OR REPLACE INTO admins (username, password_hash) VALUES
 
 -- Insert contacts (single row)
 INSERT OR REPLACE INTO contacts (id, whatsapp_phone_info, whatsapp_phone_support, facebook_url)
-VALUES (1, '+50685676443', '+50684479692', 'https://es-la.facebook.com/acueductosuerre#');
+VALUES (1, '+50611111111', '+50611111111', 'https://es-la.facebook.com/ASADAdeBuenosAires#');
 
 -- Insert home slides
 INSERT INTO home_slides (image, title, subtitle, description, sort_order) VALUES
 ('https://scontent.fsyq1-1.fna.fbcdn.net/v/t39.30808-6/487061724_1059880886164831_3580490612165758808_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=2a1932&_nc_ohc=f23BbXDP5f4Q7kNvwGO73fw&_nc_oc=Adq-kRX_HkGl4B6BvZIVqnjz02wv35Ucs2ZZ5URd4MD3a7fA_XLg_u8T42SEYCfqt20&_nc_zt=23&_nc_ht=scontent.fsyq1-1.fna&_nc_gid=QVQPYSZxk_Q265Nn1MsOsA&_nc_ss=7b289&oh=00_Af6kVabxF0nCq6ioZ0uXetCg9_aNv3tT8Cn8vQhnuRTv9w&oe=69FEC6BE',
- 'Bienvenidos a ASADA Suerre',
+ 'Bienvenidos a ASADA Buenos Aires',
  'Agua potable para toda la comunidad',
- 'Brindamos agua segura y confiable para toda la comunidad de Suerre',
+ 'Brindamos agua segura y confiable para toda la comunidad de Buenos Aires',
  0);
 
 -- Insert stats
@@ -36,7 +36,7 @@ INSERT INTO stats (number, label, sort_order) VALUES
 
 -- Insert about content (mission)
 INSERT OR REPLACE INTO about_content (content_type, title, content) VALUES
-('mission', 'Misión', 'Proporcionar agua potable de calidad a todos los habitantes de la comunidad de Suerre, garantizando un servicio eficiente, sostenible y a precios accesibles, contribuyendo al mejoramiento de la calidad de vida de nuestros usuarios.');
+('mission', 'Misión', 'Proporcionar agua potable de calidad a todos los habitantes de la comunidad de Buenos Aires, garantizando un servicio eficiente, sostenible y a precios accesibles, contribuyendo al mejoramiento de la calidad de vida de nuestros usuarios.');
 
 -- Insert about content (vision)
 INSERT OR REPLACE INTO about_content (content_type, title, content) VALUES
