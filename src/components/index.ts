@@ -23,7 +23,7 @@ export { default as Noticias } from './Noticias/Noticias';
 export { default as Gestiones } from './Gestiones/Gestiones';
 export { default as Gobernanza } from './Gobernanza/Gobernanza';
 export { default as NuestraHistoria } from './NuestraHistoria/NuestraHistoria';
-export { default as Datos } from './Datos/Datos';
+export { default as CalidadDeAgua } from './Datos/CalidadDeAgua';
 export { default as Contactos } from './Contactos/Contactos';
 
 // Re-export types if needed

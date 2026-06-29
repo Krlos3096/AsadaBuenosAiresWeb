@@ -856,6 +856,54 @@ async function updateStats(request: Request, env: Env): Promise<Response> {
   }
 }
 
+// POST /stats (create new stat)
+async function createStat(request: Request, env: Env): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  const body = await parseBody(request);
+
+  if (!body) {
+    return errorResponse('El cuerpo de la solicitud es requerido');
+  }
+
+  try {
+    const { number, label, sort_order } = body;
+
+    if (!number || !label) {
+      return errorResponse('Los campos number y label son requeridos');
+    }
+
+    const result = await env.asada_buenosaires_db.prepare(
+      'INSERT INTO stats (number, label, sort_order) VALUES (?, ?, ?)'
+    ).bind(number, label, sort_order || 0).run();
+
+    return jsonResponse({ success: true, message: 'Estadística creada exitosamente', id: result.meta.last_row_id });
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
+// DELETE /stats/:id (delete individual stat)
+async function deleteStat(request: Request, env: Env, id: string): Promise<Response> {
+  const auth = await authenticateRequest(request, env);
+  if (!auth) {
+    return errorResponse('No autorizado', 401);
+  }
+
+  try {
+    await env.asada_buenosaires_db.prepare(
+      'DELETE FROM stats WHERE id = ?'
+    ).bind(id).run();
+
+    return jsonResponse({ success: true, message: 'Estadística eliminada exitosamente' });
+  } catch (error: any) {
+    return errorResponse(error.message, 500);
+  }
+}
+
 // PUT /stats/:id (update individual stat)
 async function updateStat(request: Request, env: Env, id: string): Promise<Response> {
   const auth = await authenticateRequest(request, env);
@@ -1032,12 +1080,19 @@ export default {
     if (path === '/stats' && method === 'GET') {
       return getStats(request, env);
     }
+    if (path === '/stats' && method === 'POST') {
+      return createStat(request, env);
+    }
     if (path === '/stats' && method === 'PUT') {
       return updateStats(request, env);
     }
     if (path.startsWith('/stats/') && method === 'PUT') {
       const id = path.split('/')[2];
       return updateStat(request, env, id);
+    }
+    if (path.startsWith('/stats/') && method === 'DELETE') {
+      const id = path.split('/')[2];
+      return deleteStat(request, env, id);
     }
 
     // ==================== ABOUT CONTENT ROUTES ====================

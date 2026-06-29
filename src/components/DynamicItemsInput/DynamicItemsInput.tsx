@@ -81,10 +81,9 @@ const DynamicItemsInput: React.FC<DynamicItemsInputProps> = ({
           {chartData.map((item, index) => (
             <Box key={`chart-item-${index}`} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <TextField
-                label="Fecha"
+                label="Etiqueta"
                 value={item.label}
                 onChange={(e) => handleChartDateChange(index, e.target.value)}
-                placeholder="DD/MM/YYYY"
                 size="small"
                 fullWidth
                 sx={{

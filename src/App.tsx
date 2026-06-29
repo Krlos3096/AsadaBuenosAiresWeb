@@ -8,7 +8,7 @@ import {
   Gestiones,
   Gobernanza,
   NuestraHistoria,
-  Datos,
+  CalidadDeAgua,
   Contactos,
   Footer,
   ScrollToTop,
@@ -46,7 +46,7 @@ function AppRoutes() {
           <Route path="/gestiones" element={<Gestiones />} />
           <Route path="/gobernanza" element={<Gobernanza />} />
           <Route path="/nuestra-historia" element={<NuestraHistoria />} />
-          <Route path="/datos" element={<Datos />} />
+          <Route path="/calidad-de-agua" element={<CalidadDeAgua />} />
           <Route path="/contactos" element={<Contactos />} />
         </Routes>
       </Box>

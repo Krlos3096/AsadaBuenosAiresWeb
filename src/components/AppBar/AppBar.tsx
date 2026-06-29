@@ -289,7 +289,10 @@ export default function AppBarComponent() {
             }}
           >
             <defs>
-              <linearGradient id="gradient-behind" gradientTransform="rotate(90)">
+              <linearGradient
+                id="gradient-behind"
+                gradientTransform="rotate(90)"
+              >
                 <stop offset="5%" stopColor="#52bc52" />
                 <stop offset="95%" stopColor="#042f04" />
               </linearGradient>
@@ -400,33 +403,17 @@ export default function AppBarComponent() {
                 variant="text"
                 color="primary"
                 size="small"
-                onClick={() => handleNavigation("/nuestra-historia")}
+                onClick={() => handleNavigation("/calidad-de-agua")}
                 sx={{
-                  backgroundColor: isActive("/nuestra-historia")
+                  backgroundColor: isActive("/calidad-de-agua")
                     ? "primary.dark"
                     : "transparent",
-                  color: isActive("/nuestra-historia")
+                  color: isActive("/calidad-de-agua")
                     ? "primary.contrastText"
                     : "inherit",
                 }}
               >
-                {t.nav.about}
-              </Button>
-              <Button
-                variant="text"
-                color="primary"
-                size="small"
-                onClick={() => handleNavigation("/datos")}
-                sx={{
-                  backgroundColor: isActive("/datos")
-                    ? "primary.dark"
-                    : "transparent",
-                  color: isActive("/datos")
-                    ? "primary.contrastText"
-                    : "inherit",
-                }}
-              >
-                {t.nav.data}
+                Calidad de Agua
               </Button>
             </Box>
           </Box>
@@ -437,6 +424,22 @@ export default function AppBarComponent() {
               alignItems: "center",
             }}
           >
+            <Button
+              variant="text"
+              color="primary"
+              size="small"
+              onClick={() => handleNavigation("/nuestra-historia")}
+              sx={{
+                backgroundColor: isActive("/nuestra-historia")
+                  ? "primary.dark"
+                  : "transparent",
+                color: isActive("/nuestra-historia")
+                  ? "primary.contrastText"
+                  : "inherit",
+              }}
+            >
+              {t.nav.about}
+            </Button>
             <Button
               variant="text"
               color="primary"
@@ -505,7 +508,6 @@ export default function AppBarComponent() {
               anchor="top"
               open={open}
               onClose={toggleDrawer(false)}
-              hideBackdrop={true}
               slotProps={{
                 paper: {
                   sx: {
@@ -532,11 +534,11 @@ export default function AppBarComponent() {
                 <MenuItem onClick={() => handleNavigation("/gobernanza")}>
                   {t.nav.governance}
                 </MenuItem>
+                <MenuItem onClick={() => handleNavigation("/calidad-de-agua")}>
+                  Calidad de Agua
+                </MenuItem>
                 <MenuItem onClick={() => handleNavigation("/nuestra-historia")}>
                   {t.nav.about}
-                </MenuItem>
-                <MenuItem onClick={() => handleNavigation("/datos")}>
-                  {t.nav.data}
                 </MenuItem>
                 <MenuItem onClick={() => handleNavigation("/contactos")}>
                   {t.nav.contacts}

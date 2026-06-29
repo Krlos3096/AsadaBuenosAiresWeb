@@ -91,7 +91,7 @@ function StatCard({ number, label, onEdit }: { number: string | number; label: s
     <Card className="stat-card" sx={{ textAlign: "center", py: 3, position: 'relative' }}>
       {isAuthenticated && onEdit && (
         <IconButton
-          sx={{ position: 'absolute', top: 8, right: 8 }}
+          sx={{ position: 'absolute', top: 8, left: 8 }}
           onClick={onEdit}
           color="primary"
         >
@@ -484,7 +484,7 @@ export default function NuestraHistoria() {
           </Card>
           {isAuthenticated && (
             <IconButton
-              sx={{ position: 'absolute', top: 8, right: 8 }}
+              sx={{ position: 'absolute', top: 8, left: 8 }}
               onClick={handleEditMission}
               color="primary"
             >
@@ -509,7 +509,7 @@ export default function NuestraHistoria() {
           </Card>
           {isAuthenticated && (
             <IconButton
-              sx={{ position: 'absolute', top: 8, right: 8 }}
+              sx={{ position: 'absolute', top: 8, left: 8 }}
               onClick={handleEditVision}
               color="primary"
             >

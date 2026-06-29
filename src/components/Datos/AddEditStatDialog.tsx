@@ -28,7 +28,7 @@ export default function AddEditStatDialog({
   initialLabel = '', 
   initialChartData = [], 
   statId,
-  sortOrder = 0,
+  sortOrder = 1,
   mode = 'edit' 
 }: AddEditStatDialogProps) {
   const [formData, setFormData] = React.useState<{
@@ -43,13 +43,14 @@ export default function AddEditStatDialog({
   const { t } = useTranslation();
   const { closeDialog } = useDialog();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setFormData({
       label: initialLabel,
       chartData: initialChartData,
     });
     setErrors({});
-  }, [initialLabel, initialChartData]);
+  }, []); // Only run on mount, not when props change
 
   const handleChange = (name: string, value: string | Array<{ label: string; value: number }>) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -79,6 +80,8 @@ export default function AddEditStatDialog({
       
       if (mode === 'edit' && statId) {
         await DataService.updateStat(statId, jsonData, formData.label, sortOrder);
+      } else if (mode === 'add') {
+        await DataService.createStat(jsonData, formData.label, sortOrder);
       }
       
       await onSave();
@@ -98,7 +101,7 @@ export default function AddEditStatDialog({
           <Box>
             <TextField
               fullWidth
-              label="Label"
+              label="Nombre"
               value={formData.label}
               onChange={(e) => handleChange('label', e.target.value)}
               required

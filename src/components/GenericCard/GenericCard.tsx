@@ -640,7 +640,7 @@ const GenericCard: React.FC<GenericCardProps> = ({
         sx={{
           position: 'absolute',
           top: 8,
-          right: 8,
+          left: 50,
           display: 'flex',
           gap: 1,
           backgroundColor: 'rgba(255, 255, 255, 0.9)',

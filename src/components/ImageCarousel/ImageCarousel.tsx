@@ -101,7 +101,7 @@ function ImageCarousel({ images, autoPlay = true, interval = 4000, sx, collapsed
                   sx={{
                     position: 'absolute',
                     top: 16,
-                    right: 16,
+                    left: 16,
                     display: 'flex',
                     gap: 1,
                     zIndex: 10,

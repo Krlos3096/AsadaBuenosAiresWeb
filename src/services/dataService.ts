@@ -276,6 +276,19 @@ export const DataService = {
       body: JSON.stringify({ number, label, sort_order }),
     }, true);
   },
+
+  createStat: async (number: string, label: string, sort_order?: number): Promise<void> => {
+    return apiFetch('/stats', {
+      method: 'POST',
+      body: JSON.stringify({ number, label, sort_order }),
+    }, true);
+  },
+
+  deleteStat: async (id: string): Promise<void> => {
+    return apiFetch(`/stats/${id}`, {
+      method: 'DELETE',
+    }, true);
+  },
   
   getMission: async () => {
     try {
